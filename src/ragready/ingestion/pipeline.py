@@ -53,6 +53,29 @@ class IngestionPipeline:
         self._bm25 = bm25
         self._doc_store = doc_store
 
+    @property
+    def chroma(self) -> ChromaStore:
+        """Public accessor for the ChromaDB store (used by retrieval layer)."""
+        return self._chroma
+
+    @property
+    def bm25(self) -> BM25Store:
+        """Public accessor for the BM25 store (used by retrieval layer)."""
+        return self._bm25
+
+    @property
+    def doc_store(self) -> DocumentStore:
+        """Public accessor for the document manifest store."""
+        return self._doc_store
+
+    def list_documents(self) -> list[Document]:
+        """List all ingested documents.
+
+        Returns:
+            List of Document records.
+        """
+        return self._doc_store.list_documents()
+
     def ingest(self, file_path: Path) -> Document:
         """Ingest a document: extract text, chunk, and dual-index.
 
