@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** Phase 1 — Ingestion & Retrieval Pipeline
+**Current focus:** Phase 1 complete ✓ — Next: Phase 2 (Generation, API & Observability)
 
 ## Current Position
 
