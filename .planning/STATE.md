@@ -9,29 +9,29 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 
 ## Current Position
 
-Phase: 1 of 4 (Ingestion & Retrieval Pipeline)
-Plan: 2 of 3 in current phase
-Status: Executing phase 1
-Last activity: 2026-03-05 — Plan 01-02 completed
+Phase: 1 of 4 (Ingestion & Retrieval Pipeline) — COMPLETE
+Plan: 3 of 3 in current phase (all done)
+Status: Phase 1 complete, ready for Phase 2
+Last activity: 2026-03-05 — Plan 01-03 completed (Phase 1 done)
 
-Progress: [██░░░░░░░░] 20% (2/10 plans)
+Progress: [███░░░░░░░] 30% (3/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: ~44min
-- Total execution time: ~1.5 hours
+- Total plans completed: 3
+- Average duration: ~41min
+- Total execution time: ~2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 - Ingestion & Retrieval | 2/3 | ~88min | ~44min |
+| 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~25min), 01-02 (~63min)
-- Trend: Second plan complete, integration tests take longer
+- Last 5 plans: 01-01 (~25min), 01-02 (~63min), 01-03 (~35min)
+- Trend: Phase 1 complete. Retrieval plan faster due to simpler components (thin wrappers + RRF algorithm)
 
 *Updated after each plan completion*
 
@@ -53,6 +53,9 @@ Recent decisions affecting current work:
 - [01-02]: BM25 persistence via pickle of chunk list — rebuild index on load since BM25Okapi is immutable
 - [01-02]: Atomic dual-indexing: BM25 failure triggers ChromaDB cleanup to prevent desync
 - [01-02]: JSON document manifest for human readability; verify_sync() for cross-store consistency
+- [01-03]: No cross-encoder reranking in Phase 1 — deferred to v2, pipeline is dense+sparse→RRF→top-k
+- [01-03]: RRF constant k=60 (Cormack et al., 2009 standard default), configurable via Settings
+- [01-03]: IngestionPipeline gains public accessors for chroma/bm25/doc_store to support retrieval layer wiring
 
 ### Pending Todos
 
@@ -68,5 +71,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-05
-Stopped at: Completed 01-02-PLAN.md — ready to plan 01-03
-Resume file: .planning/phases/01-ingestion-retrieval/01-02-SUMMARY.md
+Stopped at: Completed 01-03-PLAN.md — Phase 1 complete, ready for Phase 2
+Resume file: .planning/phases/01-ingestion-retrieval/01-03-SUMMARY.md

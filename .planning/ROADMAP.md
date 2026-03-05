@@ -6,7 +6,7 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
 
 ## Phases
 
-- [ ] **Phase 1: Ingestion & Retrieval Pipeline** - Documents go in, relevant chunks come out
+- [x] **Phase 1: Ingestion & Retrieval Pipeline** - Documents go in, relevant chunks come out
 - [ ] **Phase 2: Generation, API & Observability** - Questions go in, cited answers come out via REST API
 - [ ] **Phase 3: Evaluation & CI/CD Quality Gates** - Automated measurement proves the system works
 - [ ] **Phase 4: Frontend & Portfolio** - Users interact visually, hiring managers see proof
@@ -27,8 +27,8 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
 
 Plans:
 - [x] 01-01-PLAN.md — Project foundation, core modules, and document text extractors (PDF/MD/TXT/HTML)
-- [ ] 01-02-PLAN.md — Chunking engine, dual storage adapters (ChromaDB + BM25), and ingestion pipeline
-- [ ] 01-03-PLAN.md — Hybrid retrieval (dense + sparse + RRF fusion) and document management
+- [x] 01-02-PLAN.md — Chunking engine, dual storage adapters (ChromaDB + BM25), and ingestion pipeline
+- [x] 01-03-PLAN.md — Hybrid retrieval (dense + sparse + RRF fusion) and document management
 
 ### Phase 2: Generation, API & Observability
 **Goal**: Users can ask questions via REST API and receive grounded, citation-enforced answers with full pipeline tracing
@@ -84,7 +84,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Ingestion & Retrieval | 1/3 | In progress | - |
+| 1. Ingestion & Retrieval | 3/3 | Complete | 2026-03-05 |
 | 2. Generation, API & Observability | 0/2 | Not started | - |
 | 3. Evaluation & CI/CD Quality Gates | 0/2 | Not started | - |
 | 4. Frontend & Portfolio | 0/2 | Not started | - |
