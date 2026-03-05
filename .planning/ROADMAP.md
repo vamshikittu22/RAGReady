@@ -40,11 +40,11 @@ Plans:
   3. All API endpoints (query, upload, list, delete, health) work via Swagger UI with proper error handling
   4. Each query is traced end-to-end (retrieval latency, LLM tokens, chunk scores) visible in Arize Phoenix dashboard
   5. Gemini Flash is used as primary LLM with automatic fallback to Qwen when unavailable
-**Plans**: TBD (1-3 plans)
+**Plans:** 2 plans
 
 Plans:
-- [ ] 02-01: Citation-enforced generation pipeline (LLM integration, structured output, refusal logic)
-- [ ] 02-02: FastAPI endpoints + observability (REST API, tracing, latency logging)
+- [ ] 02-01-PLAN.md — Generation response models, LLM factory (Gemini + Qwen fallback), grounding prompts, and RAG chain with refusal logic
+- [ ] 02-02-PLAN.md — FastAPI REST API (query, upload, list, delete, health), latency middleware, and Phoenix observability tracing
 
 ### Phase 3: Evaluation & CI/CD Quality Gates
 **Goal**: The system's quality is automatically measured and regressions are blocked before they merge
