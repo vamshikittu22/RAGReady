@@ -130,65 +130,65 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ING-01 | — | Pending |
-| ING-02 | — | Pending |
-| ING-03 | — | Pending |
-| ING-04 | — | Pending |
-| ING-05 | — | Pending |
-| ING-06 | — | Pending |
-| ING-07 | — | Pending |
-| ING-08 | — | Pending |
-| ING-09 | — | Pending |
-| ING-10 | — | Pending |
-| RET-01 | — | Pending |
-| RET-02 | — | Pending |
-| RET-03 | — | Pending |
-| RET-04 | — | Pending |
-| RET-05 | — | Pending |
-| GEN-01 | — | Pending |
-| GEN-02 | — | Pending |
-| GEN-03 | — | Pending |
-| GEN-04 | — | Pending |
-| GEN-05 | — | Pending |
-| GEN-06 | — | Pending |
-| API-01 | — | Pending |
-| API-02 | — | Pending |
-| API-03 | — | Pending |
-| API-04 | — | Pending |
-| API-05 | — | Pending |
-| API-06 | — | Pending |
-| UI-01 | — | Pending |
-| UI-02 | — | Pending |
-| UI-03 | — | Pending |
-| UI-04 | — | Pending |
-| UI-05 | — | Pending |
-| EVAL-01 | — | Pending |
-| EVAL-02 | — | Pending |
-| EVAL-03 | — | Pending |
-| EVAL-04 | — | Pending |
-| EVAL-05 | — | Pending |
-| EVAL-06 | — | Pending |
-| EVAL-07 | — | Pending |
-| EVAL-08 | — | Pending |
-| EVAL-09 | — | Pending |
-| CI-01 | — | Pending |
-| CI-02 | — | Pending |
-| CI-03 | — | Pending |
-| CI-04 | — | Pending |
-| OBS-01 | — | Pending |
-| OBS-02 | — | Pending |
-| OBS-03 | — | Pending |
-| PORT-01 | — | Pending |
-| PORT-02 | — | Pending |
-| PORT-03 | — | Pending |
-| PORT-04 | — | Pending |
-| PORT-05 | — | Pending |
+| ING-01 | Phase 1 | Pending |
+| ING-02 | Phase 1 | Pending |
+| ING-03 | Phase 1 | Pending |
+| ING-04 | Phase 1 | Pending |
+| ING-05 | Phase 1 | Pending |
+| ING-06 | Phase 1 | Pending |
+| ING-07 | Phase 1 | Pending |
+| ING-08 | Phase 1 | Pending |
+| ING-09 | Phase 1 | Pending |
+| ING-10 | Phase 1 | Pending |
+| RET-01 | Phase 1 | Pending |
+| RET-02 | Phase 1 | Pending |
+| RET-03 | Phase 1 | Pending |
+| RET-04 | Phase 1 | Pending |
+| RET-05 | Phase 1 | Pending |
+| GEN-01 | Phase 2 | Pending |
+| GEN-02 | Phase 2 | Pending |
+| GEN-03 | Phase 2 | Pending |
+| GEN-04 | Phase 2 | Pending |
+| GEN-05 | Phase 2 | Pending |
+| GEN-06 | Phase 2 | Pending |
+| API-01 | Phase 2 | Pending |
+| API-02 | Phase 2 | Pending |
+| API-03 | Phase 2 | Pending |
+| API-04 | Phase 2 | Pending |
+| API-05 | Phase 2 | Pending |
+| API-06 | Phase 2 | Pending |
+| UI-01 | Phase 4 | Pending |
+| UI-02 | Phase 4 | Pending |
+| UI-03 | Phase 4 | Pending |
+| UI-04 | Phase 4 | Pending |
+| UI-05 | Phase 4 | Pending |
+| EVAL-01 | Phase 3 | Pending |
+| EVAL-02 | Phase 3 | Pending |
+| EVAL-03 | Phase 3 | Pending |
+| EVAL-04 | Phase 3 | Pending |
+| EVAL-05 | Phase 3 | Pending |
+| EVAL-06 | Phase 3 | Pending |
+| EVAL-07 | Phase 3 | Pending |
+| EVAL-08 | Phase 3 | Pending |
+| EVAL-09 | Phase 3 | Pending |
+| CI-01 | Phase 3 | Pending |
+| CI-02 | Phase 3 | Pending |
+| CI-03 | Phase 3 | Pending |
+| CI-04 | Phase 3 | Pending |
+| OBS-01 | Phase 2 | Pending |
+| OBS-02 | Phase 2 | Pending |
+| OBS-03 | Phase 2 | Pending |
+| PORT-01 | Phase 4 | Pending |
+| PORT-02 | Phase 4 | Pending |
+| PORT-03 | Phase 4 | Pending |
+| PORT-04 | Phase 4 | Pending |
+| PORT-05 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 51 total
-- Mapped to phases: 0
-- Unmapped: 51 (awaiting roadmap creation)
+- v1 requirements: 53 total
+- Mapped to phases: 53
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-04*
-*Last updated: 2026-03-04 after initial definition*
+*Last updated: 2026-03-04 after roadmap creation*
