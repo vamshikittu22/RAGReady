@@ -23,11 +23,12 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
   3. A keyword query (e.g., exact phrase from a document) returns relevant chunks via hybrid search (BM25 + dense + RRF fusion)
   4. User can delete a document and confirm its chunks are removed from both indexes
   5. Retrieval returns top-5 ranked chunks after fusion, with configurable top-k and threshold parameters
-**Plans**: TBD (1-3 plans)
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: Document ingestion pipeline (upload, extract, chunk, dual-index)
-- [ ] 01-02: Hybrid retrieval pipeline (dense + sparse + RRF fusion)
+- [ ] 01-01-PLAN.md — Project foundation, core modules, and document text extractors (PDF/MD/TXT/HTML)
+- [ ] 01-02-PLAN.md — Chunking engine, dual storage adapters (ChromaDB + BM25), and ingestion pipeline
+- [ ] 01-03-PLAN.md — Hybrid retrieval (dense + sparse + RRF fusion) and document management
 
 ### Phase 2: Generation, API & Observability
 **Goal**: Users can ask questions via REST API and receive grounded, citation-enforced answers with full pipeline tracing
