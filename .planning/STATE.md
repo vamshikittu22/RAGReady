@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 ## Current Position
 
 Phase: 1 of 4 (Ingestion & Retrieval Pipeline)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-03-04 — Roadmap created
+Plan: 1 of 3 in current phase
+Status: Executing phase 1
+Last activity: 2026-03-05 — Plan 01-01 completed
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 10% (1/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: ~25min
+- Total execution time: ~0.4 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| — | — | — | — |
+| 1 - Ingestion & Retrieval | 1/3 | ~25min | ~25min |
 
 **Recent Trend:**
-- Last 5 plans: —
-- Trend: —
+- Last 5 plans: 01-01 (~25min)
+- Trend: First plan complete
 
 *Updated after each plan completion*
 
@@ -45,6 +45,10 @@ Recent decisions affecting current work:
 - [Roadmap]: 4-phase structure following data dependency chain (Ingestion+Retrieval → Generation+API+Obs → Eval+CI → Frontend+Portfolio)
 - [Roadmap]: Cross-encoder reranking deferred to v2, not included in retrieval phase
 - [Roadmap]: Observability (Arize Phoenix) grouped with Generation+API in Phase 2 since tracing wraps the query pipeline
+- [01-01]: Switched build system from hatchling to setuptools — hatchling fails on Python 3.14.2
+- [01-01]: Markdown extractor returns raw text (not HTML-converted) to preserve section headers for chunking
+- [01-01]: Chunk.generate_id uses SHA-256 of doc_id:chunk_index:text[:100] truncated to 16 hex chars
+- [01-01]: Protocol-based extractor interface (structural subtyping, no inheritance required)
 
 ### Pending Todos
 
@@ -58,6 +62,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04
-Stopped at: Roadmap created, ready to plan Phase 1
-Resume file: None
+Last session: 2026-03-05
+Stopped at: Completed 01-01-PLAN.md — ready to plan 01-02
+Resume file: .planning/phases/01-ingestion-retrieval/01-01-SUMMARY.md

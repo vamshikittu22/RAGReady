@@ -26,7 +26,7 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project foundation, core modules, and document text extractors (PDF/MD/TXT/HTML)
+- [x] 01-01-PLAN.md — Project foundation, core modules, and document text extractors (PDF/MD/TXT/HTML)
 - [ ] 01-02-PLAN.md — Chunking engine, dual storage adapters (ChromaDB + BM25), and ingestion pipeline
 - [ ] 01-03-PLAN.md — Hybrid retrieval (dense + sparse + RRF fusion) and document management
 
@@ -84,7 +84,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Ingestion & Retrieval | 0/2 | Not started | - |
+| 1. Ingestion & Retrieval | 1/3 | In progress | - |
 | 2. Generation, API & Observability | 0/2 | Not started | - |
 | 3. Evaluation & CI/CD Quality Gates | 0/2 | Not started | - |
 | 4. Frontend & Portfolio | 0/2 | Not started | - |
