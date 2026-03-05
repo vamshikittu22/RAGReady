@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragready"
+version = "0.1.0"
+description = "Production-grade RAG system with hybrid retrieval and citation-enforced generation"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]",
+    "pydantic>=2.12.0",
+    "pydantic-settings",
+    "uvicorn[standard]",
+    "langchain-core>=0.3.0",
+    "langchain-google-genai>=2.1.0",
+    "langchain-community>=0.3.0",
+    "sentence-transformers>=3.0.0",
+    "rank-bm25>=0.2.2",
+    "chromadb>=0.5.0",
+    "PyMuPDF>=1.24.0",
+    "beautifulsoup4>=4.12.0",
+    "markdown>=3.5",
+    "python-dotenv>=1.0.0",
+    "tenacity>=8.0.0",
+    "tiktoken>=0.7.0",
+    "structlog>=24.0.0",
+    "httpx>=0.27.0",
+    "numpy>=1.26.0",
+    "aiofiles>=24.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.9.0",
+    "mypy>=1.15.0",
+]
+
+[project.scripts]
+ragready = "ragready.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
