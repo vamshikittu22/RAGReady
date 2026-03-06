@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 
 ## Current Position
 
-Phase: 3 of 4 (Evaluation & CI/CD Quality Gates)
-Plan: 3 of 4 in current phase (03-01, 03-02, 03-03 done)
-Status: Phase 3 in progress — 03-03 complete, ready for 03-04
-Last activity: 2026-03-06 — Plan 03-03 completed (quality gates, benchmark, CLI scripts)
+Phase: 3 of 4 (Evaluation & CI/CD Quality Gates) — COMPLETE
+Plan: 4 of 4 in current phase (03-01, 03-02, 03-03, 03-04 done)
+Status: Phase 3 complete — ready for Phase 4
+Last activity: 2026-03-06 — Plan 03-04 completed (CI/CD pipeline with quality gates)
 
-Progress: [████████░░] 80% (8/10 plans)
+Progress: [█████████░] 90% (9/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: ~21min
-- Total execution time: ~2h 38m
+- Total plans completed: 9
+- Average duration: ~19min
+- Total execution time: ~2h 40m
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [████████░░] 80% (8/10 plans)
 |-------|-------|-------|----------|
 | 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
 | 2 - Generation, API & Obs | 2/2 | ~18min | ~9min |
-| 3 - Evaluation & CI/CD | 3/4 | ~17min | ~6min |
+| 3 - Evaluation & CI/CD | 4/4 | ~19min | ~5min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (~12min), 02-02 (~6min), 03-01 (~8min), 03-02 (~4min), 03-03 (~5min)
-- Trend: Fast metric/fixture plans; evaluation modules very fast (pure functions)
+- Last 5 plans: 02-02 (~6min), 03-01 (~8min), 03-02 (~4min), 03-03 (~5min), 03-04 (~2min)
+- Trend: Fast metric/fixture plans; CI/CD pipeline very fast (single workflow file)
 
 *Updated after each plan completion*
 
@@ -74,6 +74,9 @@ Recent decisions affecting current work:
 - [03-03]: benchmark.py dual CLI/importable module — test_benchmark.py delegates, no duplication
 - [03-03]: CI/local separation via @pytest.mark.ollama — 4 CI-safe + 3 local-only quality gates
 - [03-03]: eval_metrics session fixture computes all metrics once, writes JSON report to reports/
+- [03-04]: CI uses Python 3.12 (not 3.14) — GitHub Actions may lack 3.14 runners
+- [03-04]: Sequential CI job chain: lint → unit → integration → evaluation for fast failure feedback
+- [03-04]: Evaluation filter: -m "evaluation and not slow and not ollama" for CI-safe subset only
 
 ### Pending Todos
 
@@ -89,5 +92,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 03-03-PLAN.md — quality gates, benchmark tests, CLI scripts
-Resume file: .planning/phases/03-evaluation-cicd-quality-gates/03-03-SUMMARY.md
+Stopped at: Completed 03-04-PLAN.md — CI/CD pipeline with quality gates, Phase 3 complete
+Resume file: .planning/phases/03-evaluation-cicd-quality-gates/03-04-SUMMARY.md

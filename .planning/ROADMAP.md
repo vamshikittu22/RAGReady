@@ -8,7 +8,7 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
 
 - [x] **Phase 1: Ingestion & Retrieval Pipeline** - Documents go in, relevant chunks come out
 - [x] **Phase 2: Generation, API & Observability** - Questions go in, cited answers come out via REST API
-- [ ] **Phase 3: Evaluation & CI/CD Quality Gates** - Automated measurement proves the system works
+- [x] **Phase 3: Evaluation & CI/CD Quality Gates** - Automated measurement proves the system works
 - [ ] **Phase 4: Frontend & Portfolio** - Users interact visually, hiring managers see proof
 
 ## Phase Details
@@ -61,8 +61,8 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — Test fixture documents (3 topics), golden dataset (50 Q&A pairs), evaluation conftest with session-scoped pipeline fixtures
 - [x] 03-02-PLAN.md — 6 evaluation metric modules (faithfulness, relevancy, context recall/precision, refusal accuracy, citation accuracy)
-- [ ] 03-03-PLAN.md — Quality gate tests (CI-safe + local-only), benchmark tests, CLI evaluation and benchmark scripts, pyproject.toml updates
-- [ ] 03-04-PLAN.md — GitHub Actions CI/CD (lint, type check, tests, evaluation), PR blocking on metric regression, artifact uploads
+- [x] 03-03-PLAN.md — Quality gate tests (CI-safe + local-only), benchmark tests, CLI evaluation and benchmark scripts, pyproject.toml updates
+- [x] 03-04-PLAN.md — GitHub Actions CI/CD (lint, type check, tests, evaluation), PR blocking on metric regression, artifact uploads
 
 ### Phase 4: Frontend & Portfolio
 **Goal**: Users interact with RAGReady through a polished UI, and hiring managers can evaluate the project from the README alone
@@ -88,5 +88,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Ingestion & Retrieval | 3/3 | Complete | 2026-03-05 |
 | 2. Generation, API & Observability | 2/2 | Complete | 2026-03-06 |
-| 3. Evaluation & CI/CD Quality Gates | 2/4 | In progress | - |
+| 3. Evaluation & CI/CD Quality Gates | 4/4 | Complete | 2026-03-06 |
 | 4. Frontend & Portfolio | 0/2 | Not started | - |
