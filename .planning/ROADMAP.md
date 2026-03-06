@@ -7,7 +7,7 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
 ## Phases
 
 - [x] **Phase 1: Ingestion & Retrieval Pipeline** - Documents go in, relevant chunks come out
-- [ ] **Phase 2: Generation, API & Observability** - Questions go in, cited answers come out via REST API
+- [x] **Phase 2: Generation, API & Observability** - Questions go in, cited answers come out via REST API
 - [ ] **Phase 3: Evaluation & CI/CD Quality Gates** - Automated measurement proves the system works
 - [ ] **Phase 4: Frontend & Portfolio** - Users interact visually, hiring managers see proof
 
@@ -43,8 +43,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Generation response models, LLM factory (Gemini + Qwen fallback), grounding prompts, and RAG chain with refusal logic
-- [ ] 02-02-PLAN.md — FastAPI REST API (query, upload, list, delete, health), latency middleware, and Phoenix observability tracing
+- [x] 02-01-PLAN.md — Generation response models, LLM factory (Gemini + Qwen fallback), grounding prompts, and RAG chain with refusal logic
+- [x] 02-02-PLAN.md — FastAPI REST API (query, upload, list, delete, health), latency middleware, and Phoenix observability tracing
 
 ### Phase 3: Evaluation & CI/CD Quality Gates
 **Goal**: The system's quality is automatically measured and regressions are blocked before they merge
@@ -85,6 +85,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Ingestion & Retrieval | 3/3 | Complete | 2026-03-05 |
-| 2. Generation, API & Observability | 0/2 | Not started | - |
+| 2. Generation, API & Observability | 2/2 | Complete | 2026-03-06 |
 | 3. Evaluation & CI/CD Quality Gates | 0/2 | Not started | - |
 | 4. Frontend & Portfolio | 0/2 | Not started | - |
