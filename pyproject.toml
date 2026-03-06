@@ -43,6 +43,9 @@ dev = [
     "ruff>=0.9.0",
     "mypy>=1.15.0",
 ]
+eval = [
+    "ragas>=0.4.0",
+]
 
 [project.scripts]
 ragready = "ragready.cli:main"
@@ -53,6 +56,11 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = [
+    "evaluation: marks tests as evaluation pipeline tests",
+    "slow: marks tests as slow (LLM-dependent)",
+    "ollama: marks tests requiring Ollama server",
+]
 
 [tool.ruff]
 target-version = "py312"

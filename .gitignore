@@ -32,6 +32,7 @@ build/
 htmlcov/
 .coverage
 coverage.xml
+reports/
 
 # Data and indexes (large files, DVC tracked)
 data/indexes/
