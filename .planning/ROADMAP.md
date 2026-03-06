@@ -56,11 +56,13 @@ Plans:
   3. GitHub Actions runs evaluation on every PR and blocks merge when any metric drops below threshold
   4. Naive (dense-only) vs hybrid benchmark comparison exists with side-by-side metric results proving hybrid is better
   5. CI pipeline includes linting and type checking alongside evaluation
-**Plans:** 2 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Golden dataset (50+ Q&A pairs), 6 evaluation metrics (HHEM faithfulness, embedding relevancy/recall/precision, deterministic refusal/citation), quality gate tests, benchmark tests, and CLI evaluation script
-- [ ] 03-02-PLAN.md — GitHub Actions CI/CD (lint, type check, tests, evaluation), PR blocking on metric regression, artifact uploads, and standalone benchmark script
+- [ ] 03-01-PLAN.md — Test fixture documents (3 topics), golden dataset (50 Q&A pairs), evaluation conftest with session-scoped pipeline fixtures
+- [ ] 03-02-PLAN.md — 6 evaluation metric modules (faithfulness, relevancy, context recall/precision, refusal accuracy, citation accuracy)
+- [ ] 03-03-PLAN.md — Quality gate tests (CI-safe + local-only), benchmark tests, CLI evaluation and benchmark scripts, pyproject.toml updates
+- [ ] 03-04-PLAN.md — GitHub Actions CI/CD (lint, type check, tests, evaluation), PR blocking on metric regression, artifact uploads
 
 ### Phase 4: Frontend & Portfolio
 **Goal**: Users interact with RAGReady through a polished UI, and hiring managers can evaluate the project from the README alone
@@ -86,5 +88,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Ingestion & Retrieval | 3/3 | Complete | 2026-03-05 |
 | 2. Generation, API & Observability | 2/2 | Complete | 2026-03-06 |
-| 3. Evaluation & CI/CD Quality Gates | 0/2 | Not started | - |
+| 3. Evaluation & CI/CD Quality Gates | 0/4 | Not started | - |
 | 4. Frontend & Portfolio | 0/2 | Not started | - |
