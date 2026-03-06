@@ -128,8 +128,8 @@ class TestRAGChain:
     def test_query_refused_low_scores(self):
         """Mock retriever to return chunks with scores below threshold, verify RefusalResponse."""
         low_chunks = [
-            _make_scored_chunk(text="Weak evidence", score=0.3, chunk_index=0),
-            _make_scored_chunk(text="Also weak", score=0.4, chunk_index=1),
+            _make_scored_chunk(text="Weak evidence", score=0.003, chunk_index=0),
+            _make_scored_chunk(text="Also weak", score=0.005, chunk_index=1),
         ]
         chain, _, _, _ = self._make_chain(retriever_return=low_chunks)
 
@@ -137,7 +137,7 @@ class TestRAGChain:
 
         assert isinstance(result, RefusalResponse)
         assert result.refused is True
-        assert result.confidence == 0.4  # max of the chunk scores
+        assert result.confidence == 0.005  # max of the chunk scores
 
     def test_query_succeeds_with_good_chunks(self):
         """Mock retriever with good chunks + mock LLM, verify QueryResponse."""
@@ -166,16 +166,16 @@ class TestRAGChain:
     def test_refusal_includes_max_score(self):
         """Verify the RefusalResponse.confidence equals the max chunk score."""
         chunks = [
-            _make_scored_chunk(text="A", score=0.2, chunk_index=0),
-            _make_scored_chunk(text="B", score=0.55, chunk_index=1),
-            _make_scored_chunk(text="C", score=0.1, chunk_index=2),
+            _make_scored_chunk(text="A", score=0.002, chunk_index=0),
+            _make_scored_chunk(text="B", score=0.008, chunk_index=1),
+            _make_scored_chunk(text="C", score=0.001, chunk_index=2),
         ]
         chain, _, _, _ = self._make_chain(retriever_return=chunks)
 
         result = chain.query("Marginal question?")
 
         assert isinstance(result, RefusalResponse)
-        assert result.confidence == 0.55  # max score from chunks
+        assert result.confidence == 0.008  # max score from chunks
 
     def test_query_calls_retriever_with_question(self):
         """Verify the retriever is called with the exact user question."""

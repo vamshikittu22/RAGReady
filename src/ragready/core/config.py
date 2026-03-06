@@ -33,14 +33,14 @@ class Settings(BaseSettings):
     final_top_k: int = 5
 
     # Generation
-    confidence_threshold: float = 0.6
+    confidence_threshold: float = 0.01
     temperature: float = 0.1
 
     # LLM
     llm_model: str = "gemini-2.0-flash"
     llm_max_retries: int = 2
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "qwen2.5:7b"
+    ollama_model: str = "qwen2.5-coder:3b"
 
     # Observability
     phoenix_endpoint: str = "http://localhost:6006/v1/traces"
