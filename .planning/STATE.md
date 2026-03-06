@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** Phase 1 complete ✓ — Next: Phase 2 (Generation, API & Observability)
+**Current focus:** Phase 2 in progress — Generation pipeline built, API & observability next
 
 ## Current Position
 
-Phase: 1 of 4 (Ingestion & Retrieval Pipeline) — COMPLETE
-Plan: 3 of 3 in current phase (all done)
-Status: Phase 1 complete, ready for Phase 2
-Last activity: 2026-03-05 — Plan 01-03 completed (Phase 1 done)
+Phase: 2 of 4 (Generation, API & Observability) — IN PROGRESS
+Plan: 1 of 2 in current phase (02-01 done)
+Status: Plan 02-01 complete, ready for Plan 02-02
+Last activity: 2026-03-06 — Plan 02-01 completed (generation pipeline)
 
-Progress: [███░░░░░░░] 30% (3/10 plans)
+Progress: [████░░░░░░] 40% (4/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: ~41min
-- Total execution time: ~2 hours
+- Total plans completed: 4
+- Average duration: ~34min
+- Total execution time: ~2h 15m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
+| 2 - Generation, API & Obs | 1/2 | ~12min | ~12min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~25min), 01-02 (~63min), 01-03 (~35min)
-- Trend: Phase 1 complete. Retrieval plan faster due to simpler components (thin wrappers + RRF algorithm)
+- Last 5 plans: 01-01 (~25min), 01-02 (~63min), 01-03 (~35min), 02-01 (~12min)
+- Trend: Generation plan fast — models/chain are straightforward with mocked LLM tests
 
 *Updated after each plan completion*
 
@@ -56,6 +57,9 @@ Recent decisions affecting current work:
 - [01-03]: No cross-encoder reranking in Phase 1 — deferred to v2, pipeline is dense+sparse→RRF→top-k
 - [01-03]: RRF constant k=60 (Cormack et al., 2009 standard default), configurable via Settings
 - [01-03]: IngestionPipeline gains public accessors for chroma/bm25/doc_store to support retrieval layer wiring
+- [02-01]: LLMWithFallback.with_structured_output() propagates schema to both primary and fallback LLMs
+- [02-01]: Pre-LLM refusal gate checks max retrieval score against confidence_threshold before invoking LLM
+- [02-01]: Separate empty-chunks vs low-score refusal paths for clearer error messages
 
 ### Pending Todos
 
@@ -70,6 +74,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05
-Stopped at: Completed 01-03-PLAN.md — Phase 1 complete, ready for Phase 2
-Resume file: .planning/phases/01-ingestion-retrieval/01-03-SUMMARY.md
+Last session: 2026-03-06
+Stopped at: Completed 02-01-PLAN.md — Generation pipeline done, ready for Plan 02-02
+Resume file: .planning/phases/02-generation-api-observability/02-01-SUMMARY.md
