@@ -1,0 +1,465 @@
+{
+  "version": "1.0",
+  "description": "Golden dataset for RAGReady evaluation. 50 Q&A pairs covering factual, comparative, and refusal categories.",
+  "entries": [
+    {
+      "id": "q001",
+      "question": "Who created the Python programming language?",
+      "expected_answer": "Python was created by Guido van Rossum.",
+      "expected_contexts": ["Python was created by Guido van Rossum and first released in 1991"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q002",
+      "question": "When was Python first released?",
+      "expected_answer": "Python was first released in 1991.",
+      "expected_contexts": ["Python was created by Guido van Rossum and first released in 1991"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q003",
+      "question": "What is the reference implementation of Python called?",
+      "expected_answer": "The reference implementation of Python is called CPython, which is written in C.",
+      "expected_contexts": ["The reference implementation of Python is called CPython, which is written in C"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q004",
+      "question": "What PEP introduced type hints in Python?",
+      "expected_answer": "Type hints were introduced in Python through PEP 484.",
+      "expected_contexts": ["type hints were introduced through PEP 484"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q005",
+      "question": "What is the time complexity for dictionary lookup in Python?",
+      "expected_answer": "Python dictionaries have O(1) average lookup time, implemented using hash tables.",
+      "expected_contexts": ["dictionary (dict) is an unordered collection of key-value pairs with O(1) average lookup time"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q006",
+      "question": "What module is used to create virtual environments in Python?",
+      "expected_answer": "The venv module, included in the Python standard library since Python 3.3, creates virtual environments.",
+      "expected_contexts": ["The venv module, included in the Python standard library since Python 3.3"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q007",
+      "question": "How many packages does PyPI host?",
+      "expected_answer": "The Python Package Index (PyPI) hosts over 500,000 third-party packages.",
+      "expected_contexts": ["Python Package Index (PyPI), which hosts over 500,000 third-party packages"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q008",
+      "question": "What principle does Python follow for exception handling?",
+      "expected_answer": "Python follows the EAFP principle (Easier to Ask Forgiveness than Permission), preferring try-except over pre-checking conditions.",
+      "expected_contexts": ["Python follows the EAFP principle (Easier to Ask Forgiveness than Permission)"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q009",
+      "question": "When was Python 3.0 released?",
+      "expected_answer": "Python 3.0 was released in December 2008.",
+      "expected_contexts": ["Python 3.0, released in December 2008, was a major backward-incompatible revision"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q010",
+      "question": "What are Python decorators?",
+      "expected_answer": "Decorators are a syntactic sugar for wrapping functions, using the @decorator_name syntax above the function definition.",
+      "expected_contexts": ["Decorators are a syntactic sugar for wrapping functions, using the @decorator_name syntax"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q011",
+      "question": "What does Python's match statement provide?",
+      "expected_answer": "Python 3.10 introduced the match statement for structural pattern matching, similar to switch-case statements.",
+      "expected_contexts": ["Python 3.10 introduced the match statement for structural pattern matching"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q012",
+      "question": "What are the characteristics of a Python set?",
+      "expected_answer": "A set is an unordered collection of unique elements supporting mathematical set operations with O(1) average membership testing.",
+      "expected_contexts": ["A set is an unordered collection of unique elements that supports mathematical set operations"],
+      "expected_documents": ["doc1_python_basics.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q013",
+      "question": "What HTTP status code means Not Found?",
+      "expected_answer": "HTTP status code 404 means Not Found.",
+      "expected_contexts": ["404 means Not Found, and 500 means Internal Server Error"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q014",
+      "question": "What HTTP methods does REST use?",
+      "expected_answer": "HTTP methods include GET (retrieves data), POST (submits data), PUT (replaces a resource), PATCH (partially modifies), and DELETE (removes a resource).",
+      "expected_contexts": ["GET retrieves data from a server, POST submits data for processing, PUT replaces an existing resource"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q015",
+      "question": "Who created the FastAPI framework?",
+      "expected_answer": "FastAPI was created by Sebastián Ramírez.",
+      "expected_contexts": ["FastAPI is a modern Python web framework for building APIs, created by Sebastián Ramírez"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q016",
+      "question": "Where can you access FastAPI's auto-generated documentation?",
+      "expected_answer": "FastAPI generates Swagger UI documentation at /docs and ReDoc documentation at /redoc.",
+      "expected_contexts": ["Swagger UI (available at /docs) and ReDoc (available at /redoc)"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q017",
+      "question": "What are the six constraints of REST?",
+      "expected_answer": "The six constraints of REST are client-server architecture, statelessness, cacheability, uniform interface, layered system, and code on demand (optional).",
+      "expected_contexts": ["six constraints of REST are: client-server architecture, statelessness, cacheability, uniform interface"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q018",
+      "question": "What are the three parts of a JWT?",
+      "expected_answer": "JSON Web Tokens consist of three parts: a header, a payload, and a signature, separated by dots.",
+      "expected_contexts": ["JSON Web Tokens (JWT) consist of three parts: a header, a payload, and a signature"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q019",
+      "question": "What improvements did HTTP/2 introduce?",
+      "expected_answer": "HTTP/2, published in 2015, introduced multiplexing, header compression, and server push.",
+      "expected_contexts": ["HTTP/2, published in 2015, introduced multiplexing, header compression, and server push"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q020",
+      "question": "What is semantic versioning?",
+      "expected_answer": "Semantic versioning follows the MAJOR.MINOR.PATCH format where MAJOR indicates breaking changes, MINOR adds features, and PATCH includes bug fixes.",
+      "expected_contexts": ["Semantic versioning (SemVer) follows the MAJOR.MINOR.PATCH format"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q021",
+      "question": "Who maintains React?",
+      "expected_answer": "React is maintained by Meta.",
+      "expected_contexts": ["React (maintained by Meta), Angular (maintained by Google), and Vue.js (created by Evan You)"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q022",
+      "question": "What are common API versioning strategies?",
+      "expected_answer": "Common API versioning strategies include URL path versioning, query parameter versioning, custom header versioning, and content negotiation using Accept headers.",
+      "expected_contexts": ["URL path versioning (e.g., /api/v1/users), query parameter versioning, custom header versioning"],
+      "expected_documents": ["doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q023",
+      "question": "What is the time complexity for array access by index?",
+      "expected_answer": "Arrays provide O(1) random access time using index-based lookup.",
+      "expected_contexts": ["An array stores elements in contiguous memory locations, providing O(1) random access time"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q024",
+      "question": "What is the time complexity for linked list element access?",
+      "expected_answer": "Accessing a linked list element by index requires O(n) time since traversal from the head is necessary.",
+      "expected_contexts": ["accessing an element by index requires O(n) time since traversal from the head is necessary"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q025",
+      "question": "What is a hash table's average time complexity for lookup?",
+      "expected_answer": "Hash tables provide O(1) average-case time complexity for lookup operations.",
+      "expected_contexts": ["Hash tables provide O(1) average-case time complexity for insertion, lookup, and deletion"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q026",
+      "question": "What are the common hash collision resolution strategies?",
+      "expected_answer": "Common collision resolution strategies include chaining (using linked lists at each bucket) and open addressing (probing for the next available slot).",
+      "expected_contexts": ["collision resolution strategies include chaining (using linked lists at each bucket) and open addressing"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q027",
+      "question": "What is the BST search time complexity in the worst case?",
+      "expected_answer": "BST search degrades to O(n) in the worst case when the tree becomes unbalanced.",
+      "expected_contexts": ["BST search, insertion, and deletion take O(log n) time in the average case but degrade to O(n)"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q028",
+      "question": "What is an AVL tree?",
+      "expected_answer": "An AVL tree is a self-balancing BST that maintains a balance factor of at most 1, guaranteeing O(log n) operations.",
+      "expected_contexts": ["AVL tree is a self-balancing BST that maintains a balance factor of at most 1"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q029",
+      "question": "What is the time complexity of BFS and DFS?",
+      "expected_answer": "Both BFS and DFS run in O(V + E) time where V is vertices and E is edges.",
+      "expected_contexts": ["Breadth-First Search (BFS) explores vertices level by level using a queue, running in O(V + E) time"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q030",
+      "question": "What is the time complexity of Dijkstra's algorithm?",
+      "expected_answer": "Dijkstra's algorithm runs in O((V + E) log V) time using a priority queue.",
+      "expected_contexts": ["Dijkstra's algorithm finds the shortest path from a source vertex to all other vertices in O((V + E) log V)"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q031",
+      "question": "What is a B-tree used for?",
+      "expected_answer": "A B-tree is a self-balancing tree optimized for disk-based storage, commonly used in database indexes and file systems.",
+      "expected_contexts": ["B-tree is a self-balancing tree optimized for disk-based storage, commonly used in database indexes"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q032",
+      "question": "What Python module provides heap operations?",
+      "expected_answer": "Python provides the heapq module for min-heap operations on regular lists.",
+      "expected_contexts": ["Python provides the heapq module for min-heap operations on regular lists"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q033",
+      "question": "What is the lower bound for comparison-based sorting?",
+      "expected_answer": "Comparison-based sorting algorithms have a lower bound of O(n log n) time complexity.",
+      "expected_contexts": ["Comparison-based sorting algorithms have a lower bound of O(n log n) time complexity"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q034",
+      "question": "What is the worst-case time complexity of quick sort?",
+      "expected_answer": "Quick sort has O(n²) worst-case time complexity.",
+      "expected_contexts": ["Quick sort selects a pivot element and partitions the array around it, achieving O(n log n) average time but O(n²) worst-case"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q035",
+      "question": "What is the space difference between adjacency list and adjacency matrix?",
+      "expected_answer": "An adjacency list uses O(V + E) space while an adjacency matrix uses O(V²) space.",
+      "expected_contexts": ["adjacency list represents a graph by storing each vertex's neighbors in a list, using O(V + E) space"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q036",
+      "question": "When does a hash table resize?",
+      "expected_answer": "A hash table resizes when the load factor exceeds a threshold (typically 0.75), doubling its capacity and rehashing all entries.",
+      "expected_contexts": ["When the load factor exceeds a threshold (typically 0.75), the hash table resizes by doubling its capacity"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "factual"
+    },
+    {
+      "id": "q037",
+      "question": "How do Python dictionaries compare to hash tables in data structures?",
+      "expected_answer": "Python dictionaries are implemented using hash tables, providing O(1) average lookup time, and since Python 3.7 they maintain insertion order.",
+      "expected_contexts": ["Python dictionaries and sets are implemented using hash tables", "dictionary (dict) is an unordered collection of key-value pairs with O(1) average lookup time"],
+      "expected_documents": ["doc1_python_basics.md", "doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "comparative"
+    },
+    {
+      "id": "q038",
+      "question": "How does FastAPI use Python type hints differently from standard Python type hints?",
+      "expected_answer": "While Python type hints (PEP 484) are optional and don't affect runtime, FastAPI uses them for automatic request validation and serialization through Pydantic models.",
+      "expected_contexts": ["type hints were introduced through PEP 484", "FastAPI uses Python type hints for automatic request validation and serialization through Pydantic models"],
+      "expected_documents": ["doc1_python_basics.md", "doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "comparative"
+    },
+    {
+      "id": "q039",
+      "question": "Compare array access time with hash table lookup time.",
+      "expected_answer": "Both arrays and hash tables provide O(1) time complexity for access/lookup — arrays use index-based access while hash tables use key-based hashing.",
+      "expected_contexts": ["array stores elements in contiguous memory locations, providing O(1) random access time", "Hash tables provide O(1) average-case time complexity for insertion, lookup, and deletion"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "comparative"
+    },
+    {
+      "id": "q040",
+      "question": "How do REST APIs and Python functions both handle input validation?",
+      "expected_answer": "REST APIs use Pydantic models in FastAPI for automatic validation, while Python uses try-except blocks following the EAFP principle for handling invalid inputs.",
+      "expected_contexts": ["FastAPI uses Python type hints for automatic request validation", "Python follows the EAFP principle (Easier to Ask Forgiveness than Permission)"],
+      "expected_documents": ["doc1_python_basics.md", "doc2_web_development.md"],
+      "should_refuse": false,
+      "category": "comparative"
+    },
+    {
+      "id": "q041",
+      "question": "What are the tradeoffs between using arrays versus linked lists for insertion?",
+      "expected_answer": "Array insertion at an arbitrary position requires O(n) time due to shifting elements, while linked list insertion at the head takes O(1) time but requires O(n) to find a specific position.",
+      "expected_contexts": ["insertion at an arbitrary position requires O(n) time due to shifting elements", "Linked list insertion and deletion at the head take O(1) time"],
+      "expected_documents": ["doc3_data_structures.md"],
+      "should_refuse": false,
+      "category": "comparative"
+    },
+    {
+      "id": "q042",
+      "question": "What is the best machine learning framework for image classification?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q043",
+      "question": "How do I set up a PostgreSQL database?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q044",
+      "question": "What is the best cloud provider for deploying microservices?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q045",
+      "question": "How do neural networks learn through backpropagation?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q046",
+      "question": "What is the difference between SQL and NoSQL databases?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q047",
+      "question": "How does Kubernetes manage container orchestration?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q048",
+      "question": "What is the CAP theorem in distributed systems?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q049",
+      "question": "How do I configure a Redis cache for session management?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q050",
+      "question": "What are the differences between TCP and UDP protocols?",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    },
+    {
+      "id": "q051",
+      "question": "Explain the MapReduce programming model for big data processing.",
+      "expected_answer": "",
+      "expected_contexts": [],
+      "expected_documents": [],
+      "should_refuse": true,
+      "category": "refusal"
+    }
+  ]
+}
