@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 ## Current Position
 
 Phase: 3 of 4 (Evaluation & CI/CD Quality Gates)
-Plan: 1 of 4 in current phase (03-01 done)
-Status: Phase 3 in progress — 03-01 complete, 03-02 running in parallel
-Last activity: 2026-03-06 — Plan 03-01 completed (test fixtures & golden dataset)
+Plan: 2 of 4 in current phase (03-01, 03-02 done)
+Status: Phase 3 in progress — 03-02 complete, ready for 03-03
+Last activity: 2026-03-06 — Plan 03-02 completed (6 evaluation metric modules)
 
-Progress: [██████░░░░] 60% (6/10 plans)
+Progress: [███████░░░] 70% (7/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: ~26min
-- Total execution time: ~2h 29m
+- Total plans completed: 7
+- Average duration: ~23min
+- Total execution time: ~2h 33m
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [██████░░░░] 60% (6/10 plans)
 |-------|-------|-------|----------|
 | 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
 | 2 - Generation, API & Obs | 2/2 | ~18min | ~9min |
-| 3 - Evaluation & CI/CD | 1/4 | ~8min | ~8min |
+| 3 - Evaluation & CI/CD | 2/4 | ~12min | ~6min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (~35min), 02-01 (~12min), 02-02 (~6min), 03-01 (~8min)
-- Trend: Fast fixture/data plans; Phase 3 starting with evaluation foundations
+- Last 5 plans: 01-03 (~35min), 02-01 (~12min), 02-02 (~6min), 03-01 (~8min), 03-02 (~4min)
+- Trend: Fast metric/fixture plans; evaluation modules very fast (pure functions)
 
 *Updated after each plan completion*
 
@@ -67,6 +67,10 @@ Recent decisions affecting current work:
 - [03-01]: 51 golden entries (36 factual, 5 comparative, 10 refusal) — exceeds 50 minimum
 - [03-01]: Synthetic response generation concatenates top-3 chunk texts — tests measurement pipeline not LLM
 - [03-01]: Session-scoped fixtures use tmp_path_factory for expensive pipeline/retrieval operations
+- [03-02]: HHEM with embedding fallback for faithfulness — no LLM judge, classifier or cosine similarity only
+- [03-02]: Cosine thresholds: 0.5 faithfulness, 0.7 context recall, 0.3 context precision
+- [03-02]: Deterministic refusal accuracy (isinstance) and citation accuracy (substring + set membership)
+- [03-02]: All metrics return 1.0 for empty inputs — nothing to measure = nothing wrong
 
 ### Pending Todos
 
@@ -82,5 +86,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 03-01-PLAN.md — test fixtures & golden dataset, 03-02 running in parallel
-Resume file: .planning/phases/03-evaluation-cicd-quality-gates/03-01-SUMMARY.md
+Stopped at: Completed 03-02-PLAN.md — 6 evaluation metric modules
+Resume file: .planning/phases/03-evaluation-cicd-quality-gates/03-02-SUMMARY.md

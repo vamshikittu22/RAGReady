@@ -59,8 +59,8 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Test fixture documents (3 topics), golden dataset (50 Q&A pairs), evaluation conftest with session-scoped pipeline fixtures
-- [ ] 03-02-PLAN.md — 6 evaluation metric modules (faithfulness, relevancy, context recall/precision, refusal accuracy, citation accuracy)
+- [x] 03-01-PLAN.md — Test fixture documents (3 topics), golden dataset (50 Q&A pairs), evaluation conftest with session-scoped pipeline fixtures
+- [x] 03-02-PLAN.md — 6 evaluation metric modules (faithfulness, relevancy, context recall/precision, refusal accuracy, citation accuracy)
 - [ ] 03-03-PLAN.md — Quality gate tests (CI-safe + local-only), benchmark tests, CLI evaluation and benchmark scripts, pyproject.toml updates
 - [ ] 03-04-PLAN.md — GitHub Actions CI/CD (lint, type check, tests, evaluation), PR blocking on metric regression, artifact uploads
 
@@ -88,5 +88,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Ingestion & Retrieval | 3/3 | Complete | 2026-03-05 |
 | 2. Generation, API & Observability | 2/2 | Complete | 2026-03-06 |
-| 3. Evaluation & CI/CD Quality Gates | 0/4 | Not started | - |
+| 3. Evaluation & CI/CD Quality Gates | 2/4 | In progress | - |
 | 4. Frontend & Portfolio | 0/2 | Not started | - |
