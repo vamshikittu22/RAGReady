@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** Phase 2 in progress — Generation pipeline built, API & observability next
+**Current focus:** Phase 2 complete — Ready for Phase 3 (Evaluation & CI)
 
 ## Current Position
 
-Phase: 2 of 4 (Generation, API & Observability) — IN PROGRESS
-Plan: 1 of 2 in current phase (02-01 done)
-Status: Plan 02-01 complete, ready for Plan 02-02
-Last activity: 2026-03-06 — Plan 02-01 completed (generation pipeline)
+Phase: 2 of 4 (Generation, API & Observability) — COMPLETE
+Plan: 2 of 2 in current phase (02-02 done)
+Status: Phase 2 complete, ready for Phase 3
+Last activity: 2026-03-06 — Plan 02-02 completed (API & observability)
 
-Progress: [████░░░░░░] 40% (4/10 plans)
+Progress: [█████░░░░░] 50% (5/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~34min
-- Total execution time: ~2h 15m
+- Total plans completed: 5
+- Average duration: ~29min
+- Total execution time: ~2h 21m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
-| 2 - Generation, API & Obs | 1/2 | ~12min | ~12min |
+| 2 - Generation, API & Obs | 2/2 | ~18min | ~9min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~25min), 01-02 (~63min), 01-03 (~35min), 02-01 (~12min)
-- Trend: Generation plan fast — models/chain are straightforward with mocked LLM tests
+- Last 5 plans: 01-02 (~63min), 01-03 (~35min), 02-01 (~12min), 02-02 (~6min)
+- Trend: Phase 2 plans very fast — well-defined API/observability with mocked tests
 
 *Updated after each plan completion*
 
@@ -60,6 +60,9 @@ Recent decisions affecting current work:
 - [02-01]: LLMWithFallback.with_structured_output() propagates schema to both primary and fallback LLMs
 - [02-01]: Pre-LLM refusal gate checks max retrieval score against confidence_threshold before invoking LLM
 - [02-01]: Separate empty-chunks vs low-score refusal paths for clearer error messages
+- [02-02]: Sync def for /query route — FastAPI threadpool avoids blocking event loop with LangChain sync .invoke()
+- [02-02]: Phoenix tracing uses lazy imports for graceful degradation without phoenix packages
+- [02-02]: DI via lru_cache singletons (get_settings/get_pipeline/get_rag_chain)
 
 ### Pending Todos
 
@@ -75,5 +78,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 02-01-PLAN.md — Generation pipeline done, ready for Plan 02-02
-Resume file: .planning/phases/02-generation-api-observability/02-01-SUMMARY.md
+Stopped at: Completed 02-02-PLAN.md — Phase 2 complete (API & observability), ready for Phase 3
+Resume file: .planning/phases/02-generation-api-observability/02-02-SUMMARY.md
