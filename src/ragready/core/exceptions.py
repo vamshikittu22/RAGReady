@@ -6,7 +6,9 @@ Hierarchy:
     ├── ChunkingError       — chunking failures
     ├── IndexingError       — indexing failures
     ├── RetrievalError      — retrieval failures
-    └── DocumentNotFoundError — document doesn't exist
+    ├── DocumentNotFoundError — document doesn't exist
+    ├── GenerationError     — LLM generation failures
+    └── LLMUnavailableError — both primary and fallback LLMs unavailable
 """
 
 
@@ -32,3 +34,11 @@ class RetrievalError(RAGReadyError):
 
 class DocumentNotFoundError(RAGReadyError):
     """Raised when a requested document does not exist."""
+
+
+class GenerationError(RAGReadyError):
+    """Raised when LLM generation fails."""
+
+
+class LLMUnavailableError(RAGReadyError):
+    """Raised when both primary and fallback LLMs are unavailable."""

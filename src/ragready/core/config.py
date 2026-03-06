@@ -36,6 +36,16 @@ class Settings(BaseSettings):
     confidence_threshold: float = 0.6
     temperature: float = 0.1
 
+    # LLM
+    llm_model: str = "gemini-2.0-flash"
+    llm_max_retries: int = 2
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "qwen2.5:7b"
+
+    # Observability
+    phoenix_endpoint: str = "http://localhost:6006/v1/traces"
+    phoenix_enabled: bool = False
+
     # Storage
     chroma_persist_dir: str = "./data/indexes/chroma"
     bm25_persist_path: str = "./data/indexes/bm25_index.pkl"
