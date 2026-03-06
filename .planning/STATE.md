@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** Phase 2 complete — Ready for Phase 3 (Evaluation & CI)
+**Current focus:** Phase 3 in progress — Evaluation & CI/CD Quality Gates
 
 ## Current Position
 
-Phase: 2 of 4 (Generation, API & Observability) — COMPLETE
-Plan: 2 of 2 in current phase (02-02 done)
-Status: Phase 2 complete, ready for Phase 3
-Last activity: 2026-03-06 — Plan 02-02 completed (API & observability)
+Phase: 3 of 4 (Evaluation & CI/CD Quality Gates)
+Plan: 1 of 4 in current phase (03-01 done)
+Status: Phase 3 in progress — 03-01 complete, 03-02 running in parallel
+Last activity: 2026-03-06 — Plan 03-01 completed (test fixtures & golden dataset)
 
-Progress: [█████░░░░░] 50% (5/10 plans)
+Progress: [██████░░░░] 60% (6/10 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~29min
-- Total execution time: ~2h 21m
+- Total plans completed: 6
+- Average duration: ~26min
+- Total execution time: ~2h 29m
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [█████░░░░░] 50% (5/10 plans)
 |-------|-------|-------|----------|
 | 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
 | 2 - Generation, API & Obs | 2/2 | ~18min | ~9min |
+| 3 - Evaluation & CI/CD | 1/4 | ~8min | ~8min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (~63min), 01-03 (~35min), 02-01 (~12min), 02-02 (~6min)
-- Trend: Phase 2 plans very fast — well-defined API/observability with mocked tests
+- Last 5 plans: 01-03 (~35min), 02-01 (~12min), 02-02 (~6min), 03-01 (~8min)
+- Trend: Fast fixture/data plans; Phase 3 starting with evaluation foundations
 
 *Updated after each plan completion*
 
@@ -63,6 +64,9 @@ Recent decisions affecting current work:
 - [02-02]: Sync def for /query route — FastAPI threadpool avoids blocking event loop with LangChain sync .invoke()
 - [02-02]: Phoenix tracing uses lazy imports for graceful degradation without phoenix packages
 - [02-02]: DI via lru_cache singletons (get_settings/get_pipeline/get_rag_chain)
+- [03-01]: 51 golden entries (36 factual, 5 comparative, 10 refusal) — exceeds 50 minimum
+- [03-01]: Synthetic response generation concatenates top-3 chunk texts — tests measurement pipeline not LLM
+- [03-01]: Session-scoped fixtures use tmp_path_factory for expensive pipeline/retrieval operations
 
 ### Pending Todos
 
@@ -78,5 +82,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 02-02-PLAN.md — Phase 2 complete (API & observability), ready for Phase 3
-Resume file: .planning/phases/02-generation-api-observability/02-02-SUMMARY.md
+Stopped at: Completed 03-01-PLAN.md — test fixtures & golden dataset, 03-02 running in parallel
+Resume file: .planning/phases/03-evaluation-cicd-quality-gates/03-01-SUMMARY.md
