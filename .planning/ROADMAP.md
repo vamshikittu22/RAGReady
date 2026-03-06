@@ -77,7 +77,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Scaffold Vite+React+TS project with shadcn/ui, API client, TypeScript types, and TanStack Query hooks
+- [x] 04-01-PLAN.md — Scaffold Vite+React+TS project with shadcn/ui, API client, TypeScript types, and TanStack Query hooks
 - [ ] 04-02-PLAN.md — Chat interface (messages, citations, confidence), document management UI (upload, list, delete), app layout with health status
 - [ ] 04-03-PLAN.md — Portfolio artifacts (README with architecture diagram and badges, evaluation dashboard, demo video script)
 
@@ -90,4 +90,4 @@ Plans:
 | 1. Ingestion & Retrieval | 3/3 | Complete | 2026-03-05 |
 | 2. Generation, API & Observability | 2/2 | Complete | 2026-03-06 |
 | 3. Evaluation & CI/CD Quality Gates | 4/4 | Complete | 2026-03-06 |
-| 4. Frontend & Portfolio | 0/2 | Not started | - |
+| 4. Frontend & Portfolio | 1/3 | In progress | - |
