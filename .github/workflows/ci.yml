@@ -1,0 +1,123 @@
+# RAGReady CI/CD Pipeline
+#
+# Runs lint, type check, unit tests, integration tests, and evaluation on every push/PR.
+# Quality gate test failures cause the CI job to fail, blocking the PR merge.
+#
+# NOTE: To enforce PR blocking, enable branch protection in GitHub repo settings:
+#   Settings -> Branches -> main -> Require status checks -> evaluation
+#
+# Evaluation excludes @pytest.mark.ollama and @pytest.mark.slow tests
+# (these require a local Ollama server and are not CI-safe).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run ruff linter
+        run: ruff check src/ tests/
+
+      - name: Run mypy type checker
+        run: mypy src/ --ignore-missing-imports
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Run unit tests
+        run: pytest tests/unit/ -v --tb=short
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Cache HuggingFace models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: huggingface-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            huggingface-
+
+      - name: Run integration tests
+        run: pytest tests/integration/ -v --tb=short
+
+  evaluation:
+    name: Evaluation Quality Gates
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev,eval]"
+
+      - name: Cache HuggingFace models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: huggingface-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            huggingface-
+
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Run evaluation tests
+        run: pytest tests/evaluation/ -v --tb=short -m "evaluation and not slow and not ollama"
+
+      - name: Upload evaluation report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-report
+          path: reports/
+          retention-days: 30
