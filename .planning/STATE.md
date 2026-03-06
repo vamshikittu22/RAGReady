@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** Phase 3 in progress — Evaluation & CI/CD Quality Gates
+**Current focus:** Phase 4 next — Frontend & Portfolio
 
 ## Current Position
 
