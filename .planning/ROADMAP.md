@@ -56,11 +56,11 @@ Plans:
   3. GitHub Actions runs evaluation on every PR and blocks merge when any metric drops below threshold
   4. Naive (dense-only) vs hybrid benchmark comparison exists with side-by-side metric results proving hybrid is better
   5. CI pipeline includes linting and type checking alongside evaluation
-**Plans**: TBD (1-3 plans)
+**Plans:** 2 plans
 
 Plans:
-- [ ] 03-01: Golden dataset + evaluation pipeline (Ragas/DeepEval metrics, benchmarks)
-- [ ] 03-02: CI/CD quality gates (GitHub Actions, PR blocking, artifacts)
+- [ ] 03-01-PLAN.md — Golden dataset (50+ Q&A pairs), 6 evaluation metrics (HHEM faithfulness, embedding relevancy/recall/precision, deterministic refusal/citation), quality gate tests, benchmark tests, and CLI evaluation script
+- [ ] 03-02-PLAN.md — GitHub Actions CI/CD (lint, type check, tests, evaluation), PR blocking on metric regression, artifact uploads, and standalone benchmark script
 
 ### Phase 4: Frontend & Portfolio
 **Goal**: Users interact with RAGReady through a polished UI, and hiring managers can evaluate the project from the README alone
