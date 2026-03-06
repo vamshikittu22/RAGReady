@@ -74,11 +74,12 @@ Plans:
   3. README includes architecture diagram, CI badge, quick start instructions, and links to evaluation dashboard
   4. Demo video (2 min) walks through the complete workflow: upload → query → cited answer → evaluation results
   5. CI quality gate screenshot shows a blocked PR with metric regression
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — React frontend (Vite+shadcn/ui, chat with citations and confidence, document upload/list/delete, health status)
-- [ ] 04-02-PLAN.md — Portfolio artifacts (README with architecture diagram and badges, evaluation dashboard, demo video script)
+- [ ] 04-01-PLAN.md — Scaffold Vite+React+TS project with shadcn/ui, API client, TypeScript types, and TanStack Query hooks
+- [ ] 04-02-PLAN.md — Chat interface (messages, citations, confidence), document management UI (upload, list, delete), app layout with health status
+- [ ] 04-03-PLAN.md — Portfolio artifacts (README with architecture diagram and badges, evaluation dashboard, demo video script)
 
 ## Progress
 
