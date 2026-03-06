@@ -4,6 +4,7 @@ Provides the core generation chain: query -> retrieve -> format -> generate -> v
 Supports Gemini Flash primary LLM with automatic Qwen/Ollama fallback.
 """
 
+from ragready.generation.chain import RAGChain, create_rag_chain
 from ragready.generation.llm import LLMWithFallback, create_llm
 from ragready.generation.models import (
     Citation,
@@ -17,6 +18,8 @@ __all__ = [
     "LLMWithFallback",
     "QueryResponse",
     "QueryResult",
+    "RAGChain",
     "RefusalResponse",
     "create_llm",
+    "create_rag_chain",
 ]
