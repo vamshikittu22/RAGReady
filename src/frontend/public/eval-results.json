@@ -1,14 +1,14 @@
 {
-  "context_recall": 0.82,
-  "context_precision": 0.78,
-  "faithfulness": 0.91,
-  "answer_relevancy": 0.85,
-  "refusal_accuracy": 0.95,
-  "citation_accuracy": 0.98,
-  "hallucination_rate": 0.03,
+  "context_recall": 0.4783,
+  "context_precision": 0.7024,
+  "faithfulness": 0,
+  "answer_relevancy": 0,
+  "refusal_accuracy": 0.1961,
+  "citation_accuracy": 1.0,
+  "hallucination_rate": 0,
   "benchmark": {
-    "naive_recall": 0.45,
-    "hybrid_recall": 0.82,
-    "improvement": "82%"
+    "naive_recall": 0.4783,
+    "hybrid_recall": 0.7024,
+    "improvement": "47%"
   }
 }

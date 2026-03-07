@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/{user}/{repo}/actions"><img src="https://github.com/{user}/{repo}/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/vamshikittu22/RAGReady/actions"><img src="https://github.com/vamshikittu22/RAGReady/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/python-3.12+-blue.svg" alt="Python 3.12+">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT">
   <img src="https://img.shields.io/badge/FastAPI-0.100+-009688.svg?logo=fastapi" alt="FastAPI">
@@ -80,7 +80,7 @@ graph TB
 
 ```bash
 # Clone and install
-git clone https://github.com/{user}/{repo}.git && cd ragready
+git clone https://github.com/vamshikittu22/RAGReady.git && cd ragready
 pip install -e ".[eval]"
 
 # Start the API server
