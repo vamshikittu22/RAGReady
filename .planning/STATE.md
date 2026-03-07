@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** Phase 4 next — Frontend & Portfolio
+**Current focus:** All 4 phases complete — project is portfolio-ready
 
 ## Current Position
 
-Phase: 4 of 4 (Frontend & Portfolio) — EXECUTING
-Plan: 2 of 3 in current phase (04-01, 04-02 done, 04-03 next)
-Status: Plan 04-02 complete — chat interface, documents UI, app layout done
-Last activity: 2026-03-06 — Plan 04-02 completed (Chat + Documents UI, human-verified)
+Phase: 4 of 4 (Frontend & Portfolio) — COMPLETE
+Plan: 3 of 3 in current phase (04-01, 04-02, 04-03 all done)
+Status: Phase 4 complete — frontend and portfolio artifacts done. All phases complete.
+Last activity: 2026-03-06 — Plan 04-03 completed (README, dashboard, demo script)
 
-Progress: [██████████] 94% (11/13 plans)
+Progress: [██████████] 100% (13/13 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: ~19min
-- Total execution time: ~2h 40m
+- Total plans completed: 13
+- Average duration: ~17min
+- Total execution time: ~3h 50m
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [██████████] 94% (11/13 plans)
 | 1 - Ingestion & Retrieval | 3/3 | ~123min | ~41min |
 | 2 - Generation, API & Obs | 2/2 | ~18min | ~9min |
 | 3 - Evaluation & CI/CD | 4/4 | ~19min | ~5min |
+| 4 - Frontend & Portfolio | 3/3 | ~70min | ~23min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (~6min), 03-01 (~8min), 03-02 (~4min), 03-03 (~5min), 03-04 (~2min)
-- Trend: Fast metric/fixture plans; CI/CD pipeline very fast (single workflow file)
+- Last 5 plans: 03-04 (~2min), 04-01 (~45min), 04-02 (~15min), 04-03 (~10min)
+- Trend: Frontend plans moderate duration; portfolio artifacts fast
 
 *Updated after each plan completion*
 
@@ -86,6 +87,9 @@ Recent decisions affecting current work:
 - [04-02]: In-memory chat state via useState — no persistence, sufficient for portfolio demo
 - [04-02]: 70/30 flex layout for chat/citations, responsive stacking on mobile
 - [04-02]: AlertDialog for delete confirmation, drag-and-drop upload with file input fallback
+- [04-03]: Static JSON for eval results — fetched from public/, replaceable by CI pipeline output
+- [04-03]: Mermaid for architecture diagram — renders natively on GitHub, no image hosting
+- [04-03]: Sample metric values as defaults — real values from running evaluate.py
 
 ### Pending Todos
 
@@ -101,5 +105,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 04-02-PLAN.md — Chat UI, documents UI, app layout with health indicator
-Resume file: .planning/phases/04-frontend-portfolio/04-02-SUMMARY.md
+Stopped at: All phases complete — RAGReady is portfolio-ready
+Resume file: .planning/phases/04-frontend-portfolio/04-03-SUMMARY.md
