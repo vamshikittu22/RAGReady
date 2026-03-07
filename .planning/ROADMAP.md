@@ -78,7 +78,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md — Scaffold Vite+React+TS project with shadcn/ui, API client, TypeScript types, and TanStack Query hooks
-- [ ] 04-02-PLAN.md — Chat interface (messages, citations, confidence), document management UI (upload, list, delete), app layout with health status
+- [x] 04-02-PLAN.md — Chat interface (messages, citations, confidence), document management UI (upload, list, delete), app layout with health status
 - [ ] 04-03-PLAN.md — Portfolio artifacts (README with architecture diagram and badges, evaluation dashboard, demo video script)
 
 ## Progress

@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 ## Current Position
 
 Phase: 4 of 4 (Frontend & Portfolio) — EXECUTING
-Plan: 1 of 3 in current phase (04-01 done, 04-02 next)
-Status: Plan 04-01 complete — scaffold and API layer done
-Last activity: 2026-03-06 — Plan 04-01 completed (Vite+React+TS scaffold, API client, hooks)
+Plan: 2 of 3 in current phase (04-01, 04-02 done, 04-03 next)
+Status: Plan 04-02 complete — chat interface, documents UI, app layout done
+Last activity: 2026-03-06 — Plan 04-02 completed (Chat + Documents UI, human-verified)
 
-Progress: [██████████] 91% (10/13 plans)
+Progress: [██████████] 94% (11/13 plans)
 
 ## Performance Metrics
 
@@ -83,6 +83,9 @@ Recent decisions affecting current work:
 - [04-01]: erasableSyntaxOnly enabled by Vite 7 — no parameter properties in class constructors
 - [04-01]: verbatimModuleSyntax requires type keyword for type-only imports
 - [04-01]: API client uses fetch wrappers with ApiError class, queryKeys factory pattern
+- [04-02]: In-memory chat state via useState — no persistence, sufficient for portfolio demo
+- [04-02]: 70/30 flex layout for chat/citations, responsive stacking on mobile
+- [04-02]: AlertDialog for delete confirmation, drag-and-drop upload with file input fallback
 
 ### Pending Todos
 
@@ -98,5 +101,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Completed 04-01-PLAN.md — Vite+React+TS scaffold with API client and hooks
-Resume file: .planning/phases/04-frontend-portfolio/04-01-SUMMARY.md
+Stopped at: Completed 04-02-PLAN.md — Chat UI, documents UI, app layout with health indicator
+Resume file: .planning/phases/04-frontend-portfolio/04-02-SUMMARY.md
