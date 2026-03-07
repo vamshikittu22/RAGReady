@@ -1,28 +1,23 @@
-"""LLM factory with Gemini primary + Qwen/Ollama fallback.
+"""LLM factory with Gemini primary.
 
-Provides LLMWithFallback that tries Gemini Flash first, then falls back
-to a local Qwen model via Ollama if the primary fails.
-
-Gemini construction is LAZY: if no Google API key is configured, the
-primary is a stub that always raises, so the fallback activates cleanly
-without crashing at startup.
+Provides LLMWrapper that tries Gemini Flash. If it fails due to rate limit
+or other errors, it logs the downtime and raises an error saying we are
+working on offline model integration.
 """
 
 from __future__ import annotations
 
+import json
+import os
+from datetime import datetime
 import structlog
-from langchain_ollama import ChatOllama
 
 from ragready.core.config import Settings
 from ragready.core.exceptions import LLMUnavailableError
 
 
 class _GeminiUnavailableStub:
-    """Stub that raises on invoke when Gemini API key is not configured.
-
-    Allows the app to start and fall back to Ollama without crashing
-    during dependency injection.
-    """
+    """Stub that raises on invoke when Gemini API key is not configured."""
 
     def __init__(self, reason: str) -> None:
         self._reason = reason
@@ -31,69 +26,82 @@ class _GeminiUnavailableStub:
         raise LLMUnavailableError(self._reason)
 
     def with_structured_output(self, schema, **kwargs):
-        """Return self — structured output also raises on invoke."""
         return self
 
 
-class LLMWithFallback:
-    """Tries Gemini Flash first, falls back to Qwen via Ollama on failure.
+def _log_downtime(error_msg: str):
+    """Log the downtime to a history file."""
+    try:
+        data_dir = os.path.join(os.getcwd(), "data")
+        os.makedirs(data_dir, exist_ok=True)
+        file_path = os.path.join(data_dir, "downtime.json")
+        
+        entry = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "error": str(error_msg),
+            "message": "We are working on getting an offline model which takes time. Please try again after some time."
+        }
+        
+        history = []
+        if os.path.exists(file_path):
+            with open(file_path, "r", encoding="utf-8") as f:
+                try:
+                    history = json.load(f)
+                except json.JSONDecodeError:
+                    pass
+        
+        history.append(entry)
+        
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(history, f, indent=2)
+            
+    except Exception as e:
+        logger = structlog.get_logger()
+        logger.error("failed_to_log_downtime", error=str(e))
 
-    Wraps two LangChain chat model instances and provides a unified invoke()
-    interface with automatic failover. Also supports with_structured_output()
-    to propagate JSON schema binding to both models.
-    """
 
-    def __init__(self, primary, fallback, logger) -> None:
+class LLMWrapper:
+    """Tries Gemini Flash. Fails with a specific message on any error."""
+
+    def __init__(self, primary, logger) -> None:
         self._primary = primary
-        self._fallback = fallback
         self._logger = logger
         self._using_fallback = False
 
     def invoke(self, messages):
-        """Invoke primary LLM, fall back to secondary on any error."""
+        """Invoke primary LLM, fail with explicit message on error."""
         try:
-            result = self._primary.invoke(messages)
-            self._using_fallback = False
-            return result
+            return self._primary.invoke(messages)
         except Exception as e:
-            self._logger.warning("primary_llm_failed", error=str(e), fallback="ollama")
-            try:
-                result = self._fallback.invoke(messages)
-                self._using_fallback = True
-                return result
-            except Exception as fallback_err:
-                raise LLMUnavailableError(
-                    f"Both LLMs failed. Primary: {e}, Fallback: {fallback_err}"
-                ) from fallback_err
+            self._logger.warning("primary_llm_failed", error=str(e))
+            _log_downtime(str(e))
+            raise LLMUnavailableError(
+                "We are working on getting an offline model which takes time. Please try again after some time."
+            ) from e
 
     def with_structured_output(self, schema):
-        """Return a new LLMWithFallback where both LLMs produce structured output."""
+        """Return a new LLMWrapper where LLM produces structured output."""
         primary_structured = self._primary.with_structured_output(
             schema, method="json_schema"
         ) if not isinstance(self._primary, _GeminiUnavailableStub) else self._primary
-        return LLMWithFallback(
+        return LLMWrapper(
             primary=primary_structured,
-            fallback=self._fallback.with_structured_output(schema),
             logger=self._logger,
         )
 
     @property
     def is_using_fallback(self) -> bool:
-        """Whether the last invocation used the fallback LLM."""
-        return self._using_fallback
+        return False
 
 
-def create_llm(settings: Settings) -> LLMWithFallback:
-    """Factory: create Gemini Flash primary + Qwen Ollama fallback.
-
-    If no Google API key is configured, the primary is a stub that always
-    fails, allowing the Ollama fallback to handle all requests.
+def create_llm(settings: Settings) -> LLMWrapper:
+    """Factory: create Gemini Flash primary wrapper.
 
     Args:
         settings: Application settings with LLM configuration.
 
     Returns:
-        LLMWithFallback instance ready for invocation.
+        LLMWrapper instance ready for invocation.
     """
     logger = structlog.get_logger()
 
@@ -112,14 +120,9 @@ def create_llm(settings: Settings) -> LLMWithFallback:
             logger.warning("gemini_init_failed", error=str(e))
             primary = _GeminiUnavailableStub(reason=f"Gemini init failed: {e}")
     else:
-        logger.info("gemini_api_key_not_set", using="ollama_only")
+        logger.info("gemini_api_key_not_set")
         primary = _GeminiUnavailableStub(
             reason="Google API key not configured (set RAGREADY_GOOGLE_API_KEY)"
         )
 
-    fallback = ChatOllama(
-        model=settings.ollama_model,
-        base_url=settings.ollama_base_url,
-        temperature=settings.temperature,
-    )
-    return LLMWithFallback(primary=primary, fallback=fallback, logger=logger)
+    return LLMWrapper(primary=primary, logger=logger)

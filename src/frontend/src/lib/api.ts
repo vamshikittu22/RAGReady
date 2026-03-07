@@ -82,4 +82,7 @@ export const api = {
 
   /** GET /health — system health check */
   getHealth: () => fetchApi<HealthResponse>('/health'),
+
+  /** GET /downtime-history — get records of llm failover attempts */
+  getDowntimeHistory: () => fetchApi<import('@/types/api').DowntimeEntry[]>('/downtime-history'),
 }

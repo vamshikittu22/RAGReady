@@ -59,9 +59,14 @@ export interface HealthResponse {
   status: string
   version: string
   llm_model: string
-  fallback_model: string | null
   document_count: number
   phoenix_enabled: boolean
+}
+
+export interface DowntimeEntry {
+  timestamp: string
+  error: string
+  message: string
 }
 
 /** Chat message for UI state (in-memory only) */
