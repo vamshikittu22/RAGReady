@@ -10,7 +10,7 @@ import structlog
 
 from ragready.core.config import Settings
 from ragready.core.models import ScoredChunk
-from ragready.generation.llm import LLMWithFallback, create_llm
+from ragready.generation.llm import LLMWrapper, create_llm
 from ragready.generation.models import QueryResponse, QueryResult, RefusalResponse
 from ragready.generation.prompts import build_prompt
 
@@ -24,11 +24,11 @@ class RAGChain:
 
     Args:
         retriever: HybridRetriever from Phase 1.
-        llm: LLMWithFallback from llm.py.
+        llm: LLMWrapper from llm.py.
         settings: App settings (confidence_threshold, etc.).
     """
 
-    def __init__(self, retriever, llm: LLMWithFallback, settings: Settings) -> None:
+    def __init__(self, retriever, llm: LLMWrapper, settings: Settings) -> None:
         self._retriever = retriever
         self._llm = llm
         self._settings = settings

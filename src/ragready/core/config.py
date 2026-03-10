@@ -18,6 +18,7 @@ class Settings(BaseSettings):
 
     # API Keys
     google_api_key: str = ""
+    openrouter_api_key: str = ""
 
     # Embedding
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
@@ -41,6 +42,8 @@ class Settings(BaseSettings):
     llm_max_retries: int = 2
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "qwen2.5-coder:3b"
+    openrouter_model: str = "google/gemini-2.0-flash-001"
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
 
     # Observability
     phoenix_endpoint: str = "http://localhost:6006/v1/traces"

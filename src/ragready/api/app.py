@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from ragready.api.dependencies import get_settings
 from ragready.api.middleware import LatencyLoggingMiddleware
-from ragready.api.routes import documents, health, query
+from ragready.api.routes import documents, evaluate, health, query
 from ragready.observability.tracing import setup_tracing
 
 
@@ -41,7 +41,7 @@ def create_app() -> FastAPI:
     # Middleware (order matters: CORS first, then latency logging)
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173", "http://127.0.0.1:5174"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -52,5 +52,6 @@ def create_app() -> FastAPI:
     app.include_router(query.router)
     app.include_router(documents.router)
     app.include_router(health.router)
+    app.include_router(evaluate.router)
 
     return app

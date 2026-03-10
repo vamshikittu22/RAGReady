@@ -1,25 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@/lib/api'
+import type { EvalResults } from '@/types/api'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { CheckCircle2, XCircle, TrendingUp } from 'lucide-react'
-
-interface EvalResults {
-  context_recall: number
-  context_precision: number
-  faithfulness: number
-  answer_relevancy: number
-  refusal_accuracy: number
-  citation_accuracy: number
-  hallucination_rate: number
-  benchmark: {
-    naive_recall: number
-    hybrid_recall: number
-    improvement: string
-  }
-}
+import { CheckCircle2, XCircle, TrendingUp, Play, Loader2, Clock, FlaskConical } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface MetricConfig {
-  key: keyof Omit<EvalResults, 'benchmark'>
+  key: keyof Omit<EvalResults, 'benchmark' | 'meta' | 'error'>
   label: string
   target: number
   isLowerBetter?: boolean
@@ -63,9 +51,7 @@ function MetricCard({ label, value, target, isLowerBetter }: {
       <CardContent>
         <div className="flex items-baseline gap-2">
           <span className="text-3xl font-bold tabular-nums">
-            {isLowerBetter
-              ? (value * 100).toFixed(1) + '%'
-              : (value * 100).toFixed(1) + '%'}
+            {(value * 100).toFixed(1)}%
           </span>
           <Badge variant={passed ? 'default' : 'destructive'}>
             {passed ? 'PASS' : 'FAIL'}
@@ -86,30 +72,31 @@ function MetricCard({ label, value, target, isLowerBetter }: {
 }
 
 export function EvalDashboard() {
-  const [data, setData] = useState<EvalResults | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const queryClient = useQueryClient()
 
-  useEffect(() => {
-    fetch('/eval-results.json')
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to load: ${res.status}`)
-        return res.json() as Promise<EvalResults>
-      })
-      .then(setData)
-      .catch((err: unknown) => {
-        setError(err instanceof Error ? err.message : 'Failed to load evaluation results')
-      })
-  }, [])
+  const { data, isLoading, isError } = useQuery<EvalResults>({
+    queryKey: ['eval-results'],
+    queryFn: api.getEvalResults,
+    refetchInterval: 5000, // Poll for results while evaluation is running
+  })
 
-  if (error) {
-    return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
-        Failed to load evaluation results: {error}
-      </div>
-    )
-  }
+  const evalMutation = useMutation({
+    mutationFn: api.runEvaluation,
+    onSuccess: (res) => {
+      toast.success(res.message || 'Evaluation started!')
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to start evaluation')
+    },
+    onSettled: () => {
+      // Start polling for results
+      queryClient.invalidateQueries({ queryKey: ['eval-results'] })
+    },
+  })
 
-  if (!data) {
+  const hasResults = data && !data.error && data.context_recall !== undefined
+
+  if (isLoading) {
     return (
       <div className="space-y-6">
         <div className="space-y-2">
@@ -125,17 +112,103 @@ export function EvalDashboard() {
     )
   }
 
+  if (isError) {
+    return (
+      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
+        Failed to load evaluation results. Make sure the backend is running.
+      </div>
+    )
+  }
+
+  // No results yet — show prompt to run evaluation
+  if (!hasResults) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Evaluation Dashboard — Pipeline Quality Metrics
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Run a live evaluation against your indexed documents to compute real quality metrics.
+          </p>
+        </div>
+
+        <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-border p-12">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full animate-pulse bg-primary/10" />
+            <FlaskConical className="relative h-12 w-12 text-primary p-2" />
+          </div>
+          <div className="text-center">
+            <p className="font-semibold text-foreground">No evaluation results yet</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Click below to run evaluation queries through the real RAG pipeline
+            </p>
+          </div>
+          <button
+            onClick={() => evalMutation.mutate()}
+            disabled={evalMutation.isPending}
+            className="mt-2 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
+          >
+            {evalMutation.isPending ? (
+              <><Loader2 className="h-4 w-4 animate-spin" /> Running Evaluation...</>
+            ) : (
+              <><Play className="h-4 w-4" /> Run Evaluation</>
+            )}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight">
-          Evaluation Dashboard — Automated Quality Metrics
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          CI/CD quality gates evaluated against a golden dataset of 51 Q&A pairs.
-          Metrics are computed automatically on every pull request.
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Evaluation Dashboard — Pipeline Quality Metrics
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Real metrics computed by running {data.meta?.total_questions ?? '?'} test queries through the live RAG pipeline.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          {data.meta?.timestamp && (
+            <span className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+              <Clock className="h-3 w-3" />
+              {new Date(data.meta.timestamp).toLocaleString()}
+            </span>
+          )}
+          <button
+            onClick={() => evalMutation.mutate()}
+            disabled={evalMutation.isPending}
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
+          >
+            {evalMutation.isPending ? (
+              <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Running...</>
+            ) : (
+              <><Play className="h-3.5 w-3.5" /> Re-run</>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Summary stats */}
+      {data.meta && (
+        <div className="flex flex-wrap gap-3">
+          <Badge variant="outline" className="font-mono text-xs">
+            {data.meta.total_questions} questions
+          </Badge>
+          <Badge variant="outline" className="font-mono text-xs text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800">
+            {data.meta.answered} answered
+          </Badge>
+          <Badge variant="outline" className="font-mono text-xs text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800">
+            {data.meta.refused} refused
+          </Badge>
+          <Badge variant="outline" className="font-mono text-xs">
+            {data.meta.duration_seconds}s runtime
+          </Badge>
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {METRICS.map((metric) => (

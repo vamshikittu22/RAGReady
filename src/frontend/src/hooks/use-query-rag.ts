@@ -1,5 +1,7 @@
-import { useMutation, useState, useCallback } from '@tanstack/react-query'
-import { api, queryStream, QueryResult } from '@/lib/api'
+import { useState, useCallback } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { api, queryStream } from '@/lib/api'
+import type { QueryResult } from '@/lib/api'
 
 /**
  * TanStack mutation hook for RAG queries.

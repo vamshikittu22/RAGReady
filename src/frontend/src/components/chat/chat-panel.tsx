@@ -11,20 +11,28 @@ export function ChatPanel() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [useStreaming, setUseStreaming] = useState(true)
   const { askAsync, isPending } = useQueryRag()
-  const { streamedAnswer, isStreaming, streamError, executeStream, clearStream } = useQueryRagStream()
+  const { streamedAnswer, isStreaming, executeStream, clearStream } = useQueryRagStream()
   const streamingMessageIndex = useRef<number | null>(null)
+  const isFinalized = useRef(false)
 
   const selectedCitations: Citation[] =
     selectedIndex != null ? messages[selectedIndex]?.citations ?? [] : []
 
   // Update the streaming message as tokens come in
+  // Guard with isFinalized to prevent overwriting the finalized message
   useEffect(() => {
-    if (isStreaming && streamingMessageIndex.current !== null) {
+    if (
+      isStreaming &&
+      streamingMessageIndex.current !== null &&
+      streamedAnswer &&
+      !isFinalized.current
+    ) {
       setMessages(prev => {
         const updated = [...prev]
-        if (updated[streamingMessageIndex.current!]) {
-          updated[streamingMessageIndex.current!] = {
-            ...updated[streamingMessageIndex.current!],
+        const idx = streamingMessageIndex.current!
+        if (updated[idx]) {
+          updated[idx] = {
+            ...updated[idx],
             content: streamedAnswer,
           }
         }
@@ -35,44 +43,53 @@ export function ChatPanel() {
 
   async function handleSubmit(question: string) {
     const userMessage: ChatMessage = { role: 'user', content: question }
-    setMessages((prev) => [...prev, userMessage])
+    isFinalized.current = false
 
     try {
       if (useStreaming) {
         // Streaming mode
-        const tempMessage: ChatMessage = { 
-          role: 'assistant', 
-          content: '',
+        const tempAssistantMessage: ChatMessage = {
+          role: 'assistant',
+          content: 'Thinking...',
           citations: [],
           confidence: 0,
           refused: false,
         }
-        setMessages((prev) => [...prev, tempMessage])
-        streamingMessageIndex.current = messages.length  // Index of the message we're streaming to
+
+        setMessages((prev) => {
+          const next = [...prev, userMessage, tempAssistantMessage]
+          streamingMessageIndex.current = next.length - 1
+          return next
+        })
 
         const result = await executeStream(question)
-        
-        // Finalize with complete data
-        if (result) {
+
+        // Mark as finalized BEFORE setting state to prevent useEffect overwrite
+        isFinalized.current = true
+
+        // Finalize with complete data from the done event
+        if (result && streamingMessageIndex.current !== null) {
+          const idx = streamingMessageIndex.current
           setMessages(prev => {
             const updated = [...prev]
-            const idx = streamingMessageIndex.current!
-            if (result.refused) {
-              updated[idx] = {
-                role: 'assistant',
-                content: result.refused ? '' : result.answer,
-                refused: true,
-                refusalReason: result.reason,
-                confidence: result.confidence,
-                citations: [],
-              }
-            } else {
-              updated[idx] = {
-                role: 'assistant',
-                content: result.answer,
-                citations: result.citations || [],
-                confidence: result.confidence,
-                refused: false,
+            if (updated[idx]) {
+              if (result.refused) {
+                updated[idx] = {
+                  role: 'assistant',
+                  content: '',
+                  refused: true,
+                  refusalReason: result.reason,
+                  confidence: result.confidence,
+                  citations: [],
+                }
+              } else {
+                updated[idx] = {
+                  role: 'assistant',
+                  content: result.answer || updated[idx].content,
+                  citations: result.citations || [],
+                  confidence: result.confidence,
+                  refused: false,
+                }
               }
             }
             return updated
@@ -82,34 +99,36 @@ export function ChatPanel() {
         clearStream()
       } else {
         // Non-streaming mode (original)
+        setMessages((prev) => [...prev, userMessage])
         const result = await askAsync(question)
 
         const assistantMessage: ChatMessage = result.refused
           ? {
-              role: 'assistant',
-              content: '',
-              refused: true,
-              refusalReason: result.reason,
-              confidence: result.confidence,
-              citations: [],
-            }
+            role: 'assistant',
+            content: '',
+            refused: true,
+            refusalReason: result.reason,
+            confidence: result.confidence,
+            citations: [],
+          }
           : {
-              role: 'assistant',
-              content: result.answer,
-              citations: result.citations,
-              confidence: result.confidence,
-              refused: false,
-            }
+            role: 'assistant',
+            content: result.answer,
+            citations: result.citations,
+            confidence: result.confidence,
+            refused: false,
+          }
 
         setMessages((prev) => [...prev, assistantMessage])
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to get response'
       toast.error(message)
-      // Remove the streaming message if it exists
+      // Clean up if we were streaming
       if (streamingMessageIndex.current !== null) {
         setMessages(prev => prev.filter((_, i) => i !== streamingMessageIndex.current!))
         streamingMessageIndex.current = null
+        isFinalized.current = false
         clearStream()
       }
     }

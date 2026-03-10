@@ -78,3 +78,29 @@ export interface ChatMessage {
   refused?: boolean
   refusalReason?: string
 }
+
+/** Evaluation results from the real pipeline */
+export interface EvalResults {
+  context_recall: number
+  context_precision: number
+  faithfulness: number
+  answer_relevancy: number
+  refusal_accuracy: number
+  citation_accuracy: number
+  hallucination_rate: number
+  benchmark: {
+    naive_recall: number
+    hybrid_recall: number
+    improvement: string
+  }
+  meta?: {
+    total_questions: number
+    in_context_questions: number
+    out_of_context_questions: number
+    answered: number
+    refused: number
+    duration_seconds: number
+    timestamp: string
+  }
+  error?: string
+}

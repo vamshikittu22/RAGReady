@@ -1,9 +1,40 @@
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
-import { AlertCircle, Clock, ServerCrash } from 'lucide-react'
+import { AlertCircle, ServerCrash, Clock } from 'lucide-react'
+
+interface DowntimeEntry {
+    timestamp: string
+    error: string
+    message: string
+}
+
+function extractReason(entry: DowntimeEntry): string {
+    if (entry.error.includes('429') || entry.error.includes('RESOURCE_EXHAUSTED')) {
+        return 'Gemini API quota exceeded → Fallback to OpenRouter'
+    }
+    if (entry.error.includes('timeout') || entry.error.includes('Timeout')) {
+        return 'Request timed out'
+    }
+    if (entry.error.includes('500')) {
+        return 'Internal server error'
+    }
+    return entry.message || 'LLM unavailable'
+}
+
+function formatTime(timestamp: string): string {
+    const d = new Date(timestamp)
+    return d.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+    })
+}
 
 export function DowntimeHistory() {
-    const { data: history, isLoading, isError } = useQuery({
+    const { data: history, isLoading, isError } = useQuery<DowntimeEntry[]>({
         queryKey: ['downtime-history'],
         queryFn: api.getDowntimeHistory,
         refetchInterval: 10000,
@@ -42,6 +73,8 @@ export function DowntimeHistory() {
         )
     }
 
+    const reversed = [...history].reverse()
+
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-end border-b pb-4">
@@ -51,7 +84,7 @@ export function DowntimeHistory() {
                         Outage History
                     </h2>
                     <p className="text-xs text-muted-foreground font-mono mt-1">
-                        Displaying history of website downtime
+                        LLM generation failures and fallback events
                     </p>
                 </div>
                 <div className="px-3 py-1 bg-destructive/10 text-destructive border border-destructive/20 rounded-md font-mono text-xs font-bold">
@@ -59,38 +92,25 @@ export function DowntimeHistory() {
                 </div>
             </div>
 
-            <div className="space-y-3 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
-                {[...history].reverse().map((entry, index) => (
-                    <div
-                        key={index}
-                        className="group relative border border-border/50 bg-card/40 hover:bg-card hover:border-border rounded-xl p-4 transition-all duration-300"
-                    >
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-destructive/60 to-amber-500/60 rounded-l-xl opacity-50 group-hover:opacity-100 transition-opacity" />
-
-                        <div className="flex justify-between items-start mb-2 pl-2">
-                            <div className="flex items-center gap-2 text-destructive font-bold text-sm">
-                                <AlertCircle className="h-4 w-4" />
-                                <span>Offline Model Transition</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-[10px] uppercase font-mono bg-background border px-2 py-0.5 rounded text-muted-foreground group-hover:text-foreground transition-colors">
+            <div className="overflow-y-auto max-h-[500px] pr-1 custom-scrollbar">
+                <div className="border border-border/50 rounded-xl overflow-hidden divide-y divide-border/30">
+                    {reversed.map((entry, index) => (
+                        <div
+                            key={index}
+                            className="flex items-center gap-3 px-4 py-2.5 hover:bg-muted/30 transition-colors text-sm"
+                        >
+                            <AlertCircle className="h-3.5 w-3.5 shrink-0 text-destructive/70" />
+                            <span className="shrink-0 font-mono text-xs text-muted-foreground flex items-center gap-1.5">
                                 <Clock className="h-3 w-3" />
-                                {new Date(entry.timestamp).toLocaleString()}
-                            </div>
+                                {formatTime(entry.timestamp)}
+                            </span>
+                            <span className="text-foreground/70 text-xs">—</span>
+                            <span className="text-sm text-foreground/80 truncate">
+                                {extractReason(entry)}
+                            </span>
                         </div>
-
-                        <div className="pl-2 space-y-3">
-                            <p className="text-sm text-foreground/80 leading-relaxed">
-                                {entry.message}
-                            </p>
-
-                            <div className="bg-background rounded-md border border-border/50 p-3 overflow-x-auto">
-                                <code className="text-[10px] font-mono text-muted-foreground whitespace-pre-wrap break-all">
-                                    <span className="text-destructive/80 font-semibold">TRACE:</span> {entry.error}
-                                </code>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     )
