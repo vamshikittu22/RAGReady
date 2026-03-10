@@ -23,6 +23,7 @@
 - **Hybrid Retrieval** — Dense (all-MiniLM-L6-v2) + Sparse (BM25) search fused via Reciprocal Rank Fusion for 82% recall improvement over naive retrieval
 - **Automated Evaluation** — 7-metric quality gate suite (faithfulness, relevancy, recall, precision, refusal accuracy, citation accuracy, hallucination rate) with 51 Q&A golden dataset
 - **React Frontend** — Chat interface with inline citations, document management, and evaluation dashboard
+- **Real-Time Streaming** — Server-Sent Events (SSE) deliver tokens as they're generated for a real-time "typing" effect
 - **Observability** — Full OpenTelemetry tracing via Arize Phoenix for retrieval and generation pipeline inspection
 - **CI/CD Quality Gates** — GitHub Actions pipeline blocks merges when evaluation metrics drop below thresholds
 

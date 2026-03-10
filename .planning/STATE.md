@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** Every generated answer must be grounded in retrieved evidence with verifiable citations — the system refuses to answer rather than hallucinate.
-**Current focus:** All 4 phases complete — project is portfolio-ready
+**Current focus:** Phase 5 (Fixes & V2 Features) — implementing streaming and bug fixes
 
 ## Current Position
 
-Phase: 4 of 4 (Frontend & Portfolio) — COMPLETE
-Plan: 3 of 3 in current phase (04-01, 04-02, 04-03 all done)
-Status: Phase 4 complete — frontend and portfolio artifacts done. All phases complete.
-Last activity: 2026-03-06 — Plan 04-03 completed (README, dashboard, demo script)
+Phase: 5 of 5 (Fixes & V2 Features) — IN PROGRESS
+Plan: 1 of 1 in current phase (05-01 executing)
+Status: Phase 5 in progress — streaming implementation complete, documentation in progress
+Last activity: 2026-03-10 — Plan 05-01 (streaming + bug fixes)
 
-Progress: [██████████] 100% (13/13 plans)
+Progress: [██████████] 100% (14/14 plans total, 1 in progress)
 
 ## Performance Metrics
 
@@ -91,6 +91,10 @@ Recent decisions affecting current work:
 - [04-03]: Mermaid for architecture diagram — renders natively on GitHub, no image hosting
 - [04-03]: Sample metric values as defaults — real values from running evaluate.py
 
+- [05-01]: SSE streaming via /query/stream endpoint — tokens streamed as they're generated
+- [05-01]: Frontend streaming toggle — users can enable/disable real-time response display
+- [05-01]: LLMWrapper (renamed from LLMWithFallback) — correct class name in imports
+
 ### Pending Todos
 
 None yet.
@@ -104,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06
-Stopped at: All phases complete — RAGReady is portfolio-ready
-Resume file: .planning/phases/04-frontend-portfolio/04-03-SUMMARY.md
+Last session: 2026-03-10
+Stopped at: Phase 5 (Fixes & V2 Features) — Plan 05-01 executing
+Resume file: .planning/phases/05-fixes-and-v2-features/05-01-PLAN.md

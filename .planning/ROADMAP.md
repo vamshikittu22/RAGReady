@@ -10,6 +10,7 @@ RAGReady follows a strict data dependency chain: documents must be ingested and 
 - [x] **Phase 2: Generation, API & Observability** - Questions go in, cited answers come out via REST API
 - [x] **Phase 3: Evaluation & CI/CD Quality Gates** - Automated measurement proves the system works
 - [x] **Phase 4: Frontend & Portfolio** - Users interact visually, hiring managers see proof
+- [ ] **Phase 5: Fixes & V2 Features** - Bug fixes and advanced features like streaming responses
 
 ## Phase Details
 
@@ -81,6 +82,20 @@ Plans:
 - [x] 04-02-PLAN.md — Chat interface (messages, citations, confidence), document management UI (upload, list, delete), app layout with health status
 - [x] 04-03-PLAN.md — Portfolio artifacts (README with architecture diagram and badges, evaluation dashboard, demo video script)
 
+### Phase 5: Fixes & V2 Features
+**Goal**: Fix bugs from previous phases and implement advanced V2 features that elevate the project beyond V1 capabilities
+**Depends on**: Phase 4 (requires working frontend and backend)
+**Requirements**: FIX-01, FIX-02, V2-01, V2-02
+**Success Criteria** (what must be TRUE):
+  1. All critical bugs from Phase 1-4 are fixed and tested
+  2. Server-Sent Events (SSE) streaming is implemented for the query endpoint
+  3. Frontend UI supports real-time streaming response display
+  4. Roadmap and state accurately reflect the new V2 trajectory
+**Plans:** 1 plan
+
+Plans:
+- [x] 05-01-PLAN.md — Diagnose and fix broken components, implement streaming responses (SSE), update documentation
+
 ## Progress
 
 **Execution Order:** Phase 1 → Phase 2 → Phase 3 → Phase 4
@@ -91,3 +106,4 @@ Plans:
 | 2. Generation, API & Observability | 2/2 | Complete | 2026-03-06 |
 | 3. Evaluation & CI/CD Quality Gates | 4/4 | Complete | 2026-03-06 |
 | 4. Frontend & Portfolio | 3/3 | Complete | 2026-03-06 |
+| 5. Fixes & V2 Features | 1/1 | Complete | 2026-03-10 |
