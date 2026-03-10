@@ -5,7 +5,7 @@ Supports Gemini Flash primary LLM with automatic Qwen/Ollama fallback.
 """
 
 from ragready.generation.chain import RAGChain, create_rag_chain
-from ragready.generation.llm import LLMWithFallback, create_llm
+from ragready.generation.llm import LLMWrapper, create_llm
 from ragready.generation.models import (
     Citation,
     QueryResponse,
@@ -15,7 +15,7 @@ from ragready.generation.models import (
 
 __all__ = [
     "Citation",
-    "LLMWithFallback",
+    "LLMWrapper",
     "QueryResponse",
     "QueryResult",
     "RAGChain",
