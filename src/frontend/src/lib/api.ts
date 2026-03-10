@@ -43,6 +43,73 @@ export const queryKeys = {
   health: ['health'] as const,
 }
 
+/** Streaming response types */
+export type StreamToken = {
+  type: 'token' | 'done' | 'refusal' | 'error'
+  data: string | QueryResult | { reason: string; confidence: number } | string
+}
+
+/** Callback for processing streaming tokens */
+type StreamCallback = (token: string, isDone: boolean, data?: QueryResult | { reason: string; confidence: number }) => void
+
+/** Make a streaming request to /query/stream */
+export async function queryStream(question: string, onToken: StreamCallback): Promise<QueryResult> {
+  const response = await fetch(`${API_BASE}/query/stream`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ question }),
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Unknown error' }))
+    throw new ApiError(response.status, error.detail || 'Request failed')
+  }
+
+  const reader = response.body?.getReader()
+  if (!reader) {
+    throw new ApiError(500, 'Response body is not readable')
+  }
+
+  const decoder = new TextDecoder()
+  let buffer = ''
+  let finalData: QueryResult | undefined
+
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+
+    buffer += decoder.decode(value, { stream: true })
+    const lines = buffer.split('\n')
+    buffer = lines.pop() || ''
+
+    for (const line of lines) {
+      if (line.startsWith('data: ')) {
+        try {
+          const event: StreamToken = JSON.parse(line.slice(6))
+          
+          if (event.type === 'token') {
+            onToken(event.data as string, false)
+          } else if (event.type === 'done') {
+            finalData = event.data as QueryResult
+            onToken('', true, finalData)
+          } else if (event.type === 'refusal') {
+            const refusal = event.data as { reason: string; confidence: number }
+            onToken('', true, refusal as unknown as QueryResult)
+          } else if (event.type === 'error') {
+            throw new ApiError(500, event.data as string)
+          }
+        } catch (e) {
+          console.error('Failed to parse SSE event:', e)
+        }
+      }
+    }
+  }
+
+  return finalData as QueryResult
+}
+
 /** API client with methods for all backend endpoints */
 export const api = {
   /** POST /query — ask a question, get cited answer */
