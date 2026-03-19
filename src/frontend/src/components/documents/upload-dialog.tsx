@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Upload, FileUp } from 'lucide-react'
 import { useDocuments } from '@/hooks/use-documents'
@@ -20,6 +21,7 @@ const ACCEPTED_TYPES = '.pdf,.md,.txt,.html'
 export function UploadDialog() {
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
+  const [customName, setCustomName] = useState('')
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { uploadAsync, isUploading } = useDocuments()
@@ -32,6 +34,7 @@ export function UploadDialog() {
       return
     }
     setFile(selected)
+    setCustomName(selected.name)
   }, [])
 
   function handleDragOver(e: React.DragEvent) {
@@ -54,7 +57,8 @@ export function UploadDialog() {
   async function handleUpload() {
     if (!file) return
     try {
-      const result = await uploadAsync(file)
+      const finalName = customName.trim() || file.name
+      const result = await uploadAsync({ file, customName: finalName })
       toast.success(`Document uploaded — ${result.chunk_count} chunks created`)
       setFile(null)
       setOpen(false)
@@ -69,6 +73,7 @@ export function UploadDialog() {
     setOpen(nextOpen)
     if (!nextOpen) {
       setFile(null)
+      setCustomName('')
       setIsDragOver(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
@@ -133,6 +138,17 @@ export function UploadDialog() {
               accept={ACCEPTED_TYPES}
               onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
               className="hidden"
+            />
+          </div>
+        )}
+
+        {file && !isUploading && (
+          <div className="grid gap-2 border-t pt-4">
+            <p className="text-sm font-medium">Document Name:</p>
+            <Input 
+              value={customName} 
+              onChange={(e) => setCustomName(e.target.value)} 
+              placeholder={file.name}
             />
           </div>
         )}

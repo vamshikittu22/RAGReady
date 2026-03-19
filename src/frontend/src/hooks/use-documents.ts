@@ -14,7 +14,7 @@ export function useDocuments() {
   })
 
   const uploadMutation = useMutation({
-    mutationFn: (file: File) => api.uploadDocument(file),
+    mutationFn: ({ file, customName }: { file: File; customName?: string }) => api.uploadDocument(file, customName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.documents })
       queryClient.invalidateQueries({ queryKey: queryKeys.health })

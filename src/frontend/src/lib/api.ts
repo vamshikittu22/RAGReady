@@ -132,9 +132,12 @@ export const api = {
   getDocuments: () => fetchApi<DocumentListResponse>('/documents/'),
 
   /** POST /documents/upload — upload a document file */
-  uploadDocument: async (file: File): Promise<UploadResponse> => {
+  uploadDocument: async (file: File, customName?: string): Promise<UploadResponse> => {
     const formData = new FormData()
     formData.append('file', file)
+    if (customName) {
+      formData.append('custom_name', customName)
+    }
 
     // Do NOT set Content-Type — browser sets multipart boundary automatically
     const response = await fetch(`${API_BASE}/documents/upload`, {
@@ -162,10 +165,10 @@ export const api = {
   /** GET /downtime-history — get records of llm failover attempts */
   getDowntimeHistory: () => fetchApi<import('@/types/api').DowntimeEntry[]>('/downtime-history'),
 
-  /** GET /evaluate/results — get the latest evaluation results */
-  getEvalResults: () => fetchApi<import('@/types/api').EvalResults>('/evaluate/results'),
+  /** GET /eval/results — get the latest evaluation results */
+  getEvalResults: () => fetchApi<import('@/types/api').EvalResults>('/eval/results'),
 
-  /** POST /evaluate — trigger a new evaluation run */
+  /** POST /eval/run — trigger a new evaluation run */
   runEvaluation: () =>
-    fetchApi<{ status: string; message: string }>('/evaluate', { method: 'POST' }),
+    fetchApi<{ status: string; message: string }>('/eval/run', { method: 'POST' }),
 }

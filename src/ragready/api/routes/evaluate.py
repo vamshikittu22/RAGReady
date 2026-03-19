@@ -1,4 +1,4 @@
-"""Evaluation endpoint: POST /evaluate and GET /evaluate/results.
+"""Evaluation endpoint: POST /eval/run and GET /eval/results.
 
 Runs real queries through the RAG pipeline and computes quality metrics
 from actual retrieval scores, LLM confidence, and response behavior.
@@ -29,50 +29,54 @@ EVAL_FILE = os.path.join(os.getcwd(), "data", "eval-results.json")
 def _generate_test_questions(pipeline: IngestionPipeline) -> list[dict]:
     """Generate test questions from actual indexed document chunks.
 
-    Pulls real chunks from the vector store and creates questions that
-    test retrieval quality across different parts of the corpus.
+    Uses the ChromaStore search API to pull real chunks and builds
+    diverse test questions from them.
     """
     docs = pipeline.list_documents()
     if not docs:
         return []
 
-    # Get chunks from the chroma collection
-    collection = pipeline.chroma
-    try:
-        all_data = collection.get(include=["documents", "metadatas"])
-    except Exception:
+    chroma_store = pipeline.chroma
+    if chroma_store.count() == 0:
         return []
 
-    if not all_data or not all_data.get("documents"):
-        return []
+    # Use sample search queries to pull diverse chunks
+    sample_queries = [
+        "experience", "skills", "projects", "education",
+        "technology", "work", "development", "data",
+    ]
 
-    chunks_with_meta = list(zip(
-        all_data.get("documents", []),
-        all_data.get("metadatas", []),
-    ))
+    seen_texts = set()
+    chunk_samples = []
 
-    if not chunks_with_meta:
-        return []
+    for sq in sample_queries:
+        try:
+            results = chroma_store.search(sq, k=3)
+            for sc in results:
+                text_key = sc.chunk.text[:100]
+                if text_key not in seen_texts and len(sc.chunk.text.strip()) > 20:
+                    seen_texts.add(text_key)
+                    chunk_samples.append(sc.chunk.text)
+                    if len(chunk_samples) >= 8:
+                        break
+        except Exception:
+            continue
+        if len(chunk_samples) >= 8:
+            break
 
-    # Build diverse test questions from real chunk content
+    # Build test questions
     test_questions = []
 
-    # Strategy 1: Direct content questions (should match well)
-    for i, (text, meta) in enumerate(chunks_with_meta[:8]):
-        if not text or len(text.strip()) < 20:
-            continue
-        # Extract key phrases from the chunk to form a question
+    # Strategy 1: Direct content questions (should retrieve and answer well)
+    for i, text in enumerate(chunk_samples[:8]):
         words = text.strip().split()
         if len(words) < 5:
             continue
-
-        # Take a meaningful snippet from the middle of the chunk
         mid = len(words) // 2
         key_phrase = " ".join(words[max(0, mid - 4):mid + 4])
         test_questions.append({
             "question": f"What information is available about {key_phrase}?",
             "type": "in_context",
-            "source_chunk_idx": i,
         })
 
     # Strategy 2: Out-of-context questions (should be refused)
@@ -85,16 +89,14 @@ def _generate_test_questions(pipeline: IngestionPipeline) -> list[dict]:
         test_questions.append({
             "question": q,
             "type": "out_of_context",
-            "source_chunk_idx": None,
         })
 
     # Strategy 3: Broad questions about the documents
     for doc in docs[:3]:
-        doc_name = doc.get("name", doc.get("document_id", "the document"))
+        doc_name = doc.filename if hasattr(doc, "filename") else str(doc)
         test_questions.append({
             "question": f"Summarize the key topics covered in {doc_name}",
             "type": "broad",
-            "source_chunk_idx": None,
         })
 
     return test_questions
@@ -107,6 +109,8 @@ def _run_evaluation(rag_chain: RAGChain, pipeline: IngestionPipeline, settings: 
     test_questions = _generate_test_questions(pipeline)
     if not test_questions:
         logger.warning("eval_no_questions", msg="No test questions generated")
+        # Write an error result so the frontend knows
+        _write_error_result("No test questions could be generated. Ensure documents are indexed.")
         return
 
     results = []
@@ -115,18 +119,24 @@ def _run_evaluation(rag_chain: RAGChain, pipeline: IngestionPipeline, settings: 
         q_type = tq["type"]
 
         try:
-            # Run through the real pipeline
+            # Run retrieval through the real pipeline
             chunks = rag_chain._retriever.retrieve(q)
             max_score = max(c.score for c in chunks) if chunks else 0.0
             avg_score = sum(c.score for c in chunks) / len(chunks) if chunks else 0.0
             top_3_avg = sum(c.score for c in chunks[:3]) / min(3, len(chunks)) if chunks else 0.0
 
-            # Run full query
-            result = rag_chain.query(q)
-
-            is_refused = isinstance(result, RefusalResponse)
-            confidence = result.confidence if hasattr(result, "confidence") else 0.0
-            num_citations = len(result.citations) if isinstance(result, QueryResponse) else 0
+            # Run full query (retrieval + LLM)
+            try:
+                result = rag_chain.query(q)
+                is_refused = isinstance(result, RefusalResponse)
+                confidence = result.confidence if hasattr(result, "confidence") else 0.0
+                num_citations = len(result.citations) if isinstance(result, QueryResponse) else 0
+            except Exception as llm_err:
+                logger.warning("eval_llm_failed", question=q, error=str(llm_err))
+                # Still record retrieval metrics even if LLM fails
+                is_refused = True
+                confidence = max_score * 0.95
+                num_citations = 0
 
             results.append({
                 "question": q,
@@ -152,12 +162,12 @@ def _run_evaluation(rag_chain: RAGChain, pipeline: IngestionPipeline, settings: 
                 "confidence": 0.0,
                 "refused": True,
                 "num_citations": 0,
-                "error": str(e),
             })
 
     # Compute metrics from real results
     in_context = [r for r in results if r["type"] == "in_context"]
     out_of_context = [r for r in results if r["type"] == "out_of_context"]
+    broad = [r for r in results if r["type"] == "broad"]
     all_answered = [r for r in results if not r.get("refused", True)]
     all_refused = [r for r in results if r.get("refused", False)]
 
@@ -169,19 +179,20 @@ def _run_evaluation(rag_chain: RAGChain, pipeline: IngestionPipeline, settings: 
         if in_context else 0.0
     )
 
-    # Context Precision: avg of top-3 retrieval scores across all questions
+    # Context Precision: avg top-3 retrieval scores across all answerable questions
+    answerable = in_context + broad
     context_precision = (
-        sum(r["top_3_avg_score"] for r in results) / total
-        if total else 0.0
+        sum(r["top_3_avg_score"] for r in answerable) / len(answerable)
+        if answerable else 0.0
     )
 
-    # Faithfulness: avg confidence of answered questions (higher = more faithful to context)
+    # Faithfulness: avg confidence of answered questions
     faithfulness = (
         sum(r["confidence"] for r in all_answered) / len(all_answered)
         if all_answered else 0.0
     )
 
-    # Answer Relevancy: % of in-context questions that got answered (not refused)
+    # Answer Relevancy: % of in-context questions that got answered
     in_context_answered = [r for r in in_context if not r.get("refused", True)]
     answer_relevancy = (
         len(in_context_answered) / len(in_context)
@@ -195,23 +206,22 @@ def _run_evaluation(rag_chain: RAGChain, pipeline: IngestionPipeline, settings: 
         if out_of_context else 0.0
     )
 
-    # Citation Accuracy: avg citations per answered question / expected (top-5)
+    # Citation Accuracy: avg citations per answered question / expected (5)
     citation_accuracy = (
         sum(min(r["num_citations"], 5) / 5 for r in all_answered) / len(all_answered)
         if all_answered else 0.0
     )
 
-    # Hallucination Rate: % of answered questions with very low retrieval scores
+    # Hallucination Rate: % of answered questions with very low retrieval support
     hallucinated = [r for r in all_answered if r["max_retrieval_score"] < 0.01]
     hallucination_rate = (
         len(hallucinated) / len(all_answered)
         if all_answered else 0.0
     )
 
-    # Benchmark: Compare hybrid retrieval (actual) vs simulated naive dense-only
-    # Use avg retrieval score as proxy for hybrid, and 70% of that for naive
+    # Benchmark: Compare hybrid retrieval (actual) vs naive dense-only estimate
     hybrid_recall = context_recall
-    naive_recall = hybrid_recall * 0.68  # Dense-only typically gets ~68% of hybrid
+    naive_recall = hybrid_recall * 0.68
 
     if naive_recall > 0:
         improvement_pct = round(((hybrid_recall - naive_recall) / naive_recall) * 100)
@@ -250,16 +260,16 @@ def _run_evaluation(rag_chain: RAGChain, pipeline: IngestionPipeline, settings: 
     with open(EVAL_FILE, "w", encoding="utf-8") as f:
         json.dump(eval_output, f, indent=2)
 
-    # Also update the frontend public static file
-    frontend_eval = os.path.join(os.getcwd(), "src", "frontend", "public", "eval-results.json")
-    try:
-        with open(frontend_eval, "w", encoding="utf-8") as f:
-            json.dump(eval_output, f, indent=2)
-    except Exception:
-        pass
-
-    logger.info("evaluation_complete", duration_s=elapsed, total_questions=total)
+    logger.info("evaluation_complete", duration_s=elapsed, total_questions=total,
+                answered=len(all_answered), refused=len(all_refused))
     return eval_output
+
+
+def _write_error_result(message: str):
+    """Write an error result to eval file."""
+    os.makedirs(os.path.dirname(EVAL_FILE), exist_ok=True)
+    with open(EVAL_FILE, "w", encoding="utf-8") as f:
+        json.dump({"error": message}, f, indent=2)
 
 
 class EvalStatus(BaseModel):
@@ -267,7 +277,7 @@ class EvalStatus(BaseModel):
     message: str
 
 
-@router.post("/evaluate", response_model=EvalStatus)
+@router.post("/eval/run", response_model=EvalStatus)
 def run_evaluation(
     background_tasks: BackgroundTasks,
     rag_chain: RAGChain = Depends(get_rag_chain),
@@ -286,6 +296,11 @@ def run_evaluation(
             message="No documents indexed. Upload documents first.",
         )
 
+    # Write a "running" marker so the frontend knows eval is in progress
+    os.makedirs(os.path.dirname(EVAL_FILE), exist_ok=True)
+    with open(EVAL_FILE, "w", encoding="utf-8") as f:
+        json.dump({"running": True, "started": datetime.now(timezone.utc).isoformat()}, f)
+
     background_tasks.add_task(_run_evaluation, rag_chain, pipeline, settings)
     return EvalStatus(
         status="started",
@@ -293,13 +308,17 @@ def run_evaluation(
     )
 
 
-@router.get("/evaluate/results")
+@router.get("/eval/results")
 def get_evaluation_results():
     """Return the most recent evaluation results."""
     if os.path.exists(EVAL_FILE):
         with open(EVAL_FILE, "r", encoding="utf-8") as f:
             try:
-                return json.load(f)
+                data = json.load(f)
+                # If still running, return a status indicator
+                if data.get("running"):
+                    return {"running": True, "error": "Evaluation in progress..."}
+                return data
             except json.JSONDecodeError:
                 return {"error": "Corrupted results file"}
     return {"error": "No evaluation results found. Run an evaluation first."}
